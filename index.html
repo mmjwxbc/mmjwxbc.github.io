@@ -152,6 +152,68 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-lec11-Thread-Switching" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/07/31/lec11-Thread-Switching/">lec11:Thread-Switching</a>
+    </h1>
+  
+
+        
+        <a href="/2022/07/31/lec11-Thread-Switching/" class="archive-article-date">
+  	<time datetime="2022-07-31T06:47:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/07/31/lec11-Thread-Switching/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-xv6-lock" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -356,6 +418,24 @@
 </ul>
 </li>
 </ul>
+<h3 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h3><ol>
+<li>一个子网内的节点，其IP地址高位部分相同，则这些节点构成子网</li>
+<li>无需路由器介入，子网内各主机通过物理相联</li>
+</ol>
+<h3 id="IP地址分类"><a href="#IP地址分类" class="headerlink" title="IP地址分类"></a>IP地址分类</h3><p>路由是依靠网络号进行路由的 <br>A、B、C类地址为单播地址<br><img src="/2022/07/22/NetworkLayer/4.3.3.png"><br><img src="/2022/07/22/NetworkLayer/4.3.4.png"><br><img src="/2022/07/22/NetworkLayer/4.3.5.png"></p>
+<h4 id="无类类间路由"><a href="#无类类间路由" class="headerlink" title="无类类间路由"></a>无类类间路由</h4><p><br>CIDR: Classless InterDomain Routing <br>子网部分可以在任意位置，依靠子网掩码划分子网部分长度<br><img src="/2022/07/22/NetworkLayer/4.3.6.png"></p>
+<h4 id="转发表与转发技术"><a href="#转发表与转发技术" class="headerlink" title="转发表与转发技术"></a>转发表与转发技术</h4><p><br>转发表有四个字段(目标子网号、子网掩码、下一跳、输出端口)<br><img src="/2022/07/22/NetworkLayer/4.3.7.png"></p>
+<h3 id="如何获得一个IP地址"><a href="#如何获得一个IP地址" class="headerlink" title="如何获得一个IP地址"></a>如何获得一个IP地址</h3><ol>
+<li>通过配置文件配置 ip地址、子网掩码、默认网关、DNS服务器</li>
+<li>通过DHCP: Dynamic Host Configuration Protocol <br>允许主机加入网络的时候动态地从服务器获取IP地址 <br>通过全为零的IP地址发送报文<ol>
+<li>为什么需要两次传播？ <br>因为可能存在多台DHCP服务器，需要选择其中一个IP地址<br><img src="/2022/07/22/NetworkLayer/4.3.8.png"><br><img src="/2022/07/22/NetworkLayer/4.3.9.png"></li>
+</ol>
+</li>
+</ol>
+<h3 id="如何获得一块编址"><a href="#如何获得一块编址" class="headerlink" title="如何获得一块编址"></a>如何获得一块编址</h3><p>通过 ICANN: Internet Corporation for Assigned Names and Numbers</p>
+<h3 id="路由聚集"><a href="#路由聚集" class="headerlink" title="路由聚集"></a>路由聚集</h3><p>更小的子网向更高的子网进行路由通告，再向更高的进行子网通告从而路由聚集 <br>若多个表项匹配成功，则选择最长前缀匹配<br><img src="/2022/07/22/NetworkLayer/4.3.10.png"></p>
+<h3 id="NAT-Network-Address-Translation"><a href="#NAT-Network-Address-Translation" class="headerlink" title="NAT: Network Address Translation"></a>NAT: Network Address Translation</h3><p>网络地址转换 <br>内网地址与源IP地址相互转换<br><img src="/2022/07/22/NetworkLayer/4.3.11.png"><br><img src="/2022/07/22/NetworkLayer/4.3.12.png"><br><img src="/2022/07/22/NetworkLayer/4.3.13.png"><br><img src="/2022/07/22/NetworkLayer/4.3.14.png"><br><img src="/2022/07/22/NetworkLayer/4.3.15.png"></p>
+<h3 id="NAT穿越问题-外网主机端口如何访问内网某主机端口"><a href="#NAT穿越问题-外网主机端口如何访问内网某主机端口" class="headerlink" title="NAT穿越问题 外网主机端口如何访问内网某主机端口"></a>NAT穿越问题 外网主机端口如何访问内网某主机端口</h3><p><img src="/2022/07/22/NetworkLayer/4.3.16.png"><br><img src="/2022/07/22/NetworkLayer/4.3.17.png"><br><img src="/2022/07/22/NetworkLayer/4.3.18.png"></p>
 
       
 
