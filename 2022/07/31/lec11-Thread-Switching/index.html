@@ -8,15 +8,20 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>lec11:Thread-Switching | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
+  <meta name="description" content="xv6线程切换 xv6会将接收到定时器中断的内核线程的内核寄存器保存到context对象12345678910111213141516171819&#x2F;&#x2F; Saved registers for kernel context switches.struct context &amp;#123;  uint64 ra;  uint64 sp;  &#x2F;&#x2F; callee-saved  uint64 s0;  uint">
+<meta property="og:type" content="article">
 <meta property="og:title" content="lec11:Thread-Switching">
 <meta property="og:url" content="http://example.com/2022/07/31/lec11-Thread-Switching/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="xv6线程切换 xv6会将接收到定时器中断的内核线程的内核寄存器保存到context对象12345678910111213141516171819&#x2F;&#x2F; Saved registers for kernel context switches.struct context &amp;#123;  uint64 ra;  uint64 sp;  &#x2F;&#x2F; callee-saved  uint64 s0;  uint">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/07/31/lec11-Thread-Switching/1.png">
+<meta property="og:image" content="http://example.com/2022/07/31/lec11-Thread-Switching/2.png">
 <meta property="article:published_time" content="2022-07-31T06:47:31.000Z">
-<meta property="article:modified_time" content="2022-07-31T06:47:31.418Z">
+<meta property="article:modified_time" content="2022-08-01T07:45:36.430Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/07/31/lec11-Thread-Switching/1.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -172,7 +177,29 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="xv6线程切换"><a href="#xv6线程切换" class="headerlink" title="xv6线程切换"></a>xv6线程切换</h2><ol>
+<li>xv6会将接收到定时器中断的内核线程的内核寄存器保存到context对象<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Saved registers for kernel context switches.</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">context</span> &#123;</span></span><br><span class="line">  uint64 ra;</span><br><span class="line">  uint64 sp;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// callee-saved</span></span><br><span class="line">  uint64 s0;</span><br><span class="line">  uint64 s1;</span><br><span class="line">  uint64 s2;</span><br><span class="line">  uint64 s3;</span><br><span class="line">  uint64 s4;</span><br><span class="line">  uint64 s5;</span><br><span class="line">  uint64 s6;</span><br><span class="line">  uint64 s7;</span><br><span class="line">  uint64 s8;</span><br><span class="line">  uint64 s9;</span><br><span class="line">  uint64 s10;</span><br><span class="line">  uint64 s11;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>切换另一个线程且状态处于RUNABLE(表明该程序的用户空间状态已经保存到trapframe中), 恢复该线程的context对象</li>
+<li>新的线程继续完成中断处理程序</li>
+<li>恢复trapframe, 返回至该进程的用户空间<br>即使是用户进程也需要切换至内核执行内核线程进行线程切换</li>
+</ol>
+<h3 id="example-ls进程切换至cat进程"><a href="#example-ls进程切换至cat进程" class="headerlink" title="example: ls进程切换至cat进程"></a>example: ls进程切换至cat进程</h3><ol>
+<li>ls进程接收到定时器中断，从用户空间进程切换到内核，trampoline代码将用户寄存器保存于用户进程对应的trapframe对象中</li>
+<li>ls内核线程运行usertrap</li>
+<li>yield让出CPU，调用swtch()函数</li>
+<li>swtch()函数恢复当前CPU的context，在调度器线程的context下执行schedulder函数中</li>
+<li>将ls进程设置为RUNABLE，寻找到下一个RUNABLE进程cat</li>
+<li>保存调度器自身的寄存器到context对象</li>
+<li>恢复cat进程的context对象</li>
+<li>执行cat内核线程的中断处理程序</li>
+<li>返回用户空间，执行cat进程<br><img src="/2022/07/31/lec11-Thread-Switching/1.png"></li>
+</ol>
+<h3 id="context对象保存位置"><a href="#context对象保存位置" class="headerlink" title="context对象保存位置"></a>context对象保存位置</h3><ol>
+<li>用户进程的内核线程的context对象保存至proc结构体中</li>
+<li>调度器线程的context对象保存至cpu结构体中<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">proc</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> <span class="title">lock</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// p-&gt;lock must be held when using these:</span></span><br><span class="line">  <span class="class"><span class="keyword">enum</span> <span class="title">procstate</span> <span class="title">state</span>;</span>        <span class="comment">// Process state</span></span><br><span class="line">  <span class="type">void</span> *chan;                  <span class="comment">// If non-zero, sleeping on chan</span></span><br><span class="line">  <span class="type">int</span> killed;                  <span class="comment">// If non-zero, have been killed</span></span><br><span class="line">  <span class="type">int</span> xstate;                  <span class="comment">// Exit status to be returned to parent&#x27;s wait</span></span><br><span class="line">  <span class="type">int</span> pid;                     <span class="comment">// Process ID</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// wait_lock must be held when using this:</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">parent</span>;</span>         <span class="comment">// Parent process</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// these are private to the process, so p-&gt;lock need not be held.</span></span><br><span class="line">  uint64 kstack;               <span class="comment">// Virtual address of kernel stack</span></span><br><span class="line">  uint64 sz;                   <span class="comment">// Size of process memory (bytes)</span></span><br><span class="line">  <span class="type">pagetable_t</span> pagetable;       <span class="comment">// User page table</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">trapframe</span> *<span class="title">trapframe</span>;</span> <span class="comment">// data page for trampoline.S</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">context</span> <span class="title">context</span>;</span>      <span class="comment">// swtch() here to run process</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">file</span> *<span class="title">ofile</span>[<span class="title">NOFILE</span>];</span>  <span class="comment">// Open files</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">inode</span> *<span class="title">cwd</span>;</span>           <span class="comment">// Current directory</span></span><br><span class="line">  <span class="type">char</span> name[<span class="number">16</span>];               <span class="comment">// Process name (debugging)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">proc</span>;</span>          <span class="comment">// The process running on this cpu, or null.</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">context</span> <span class="title">context</span>;</span>     <span class="comment">// swtch() here to enter scheduler().</span></span><br><span class="line">  <span class="type">int</span> noff;                   <span class="comment">// Depth of push_off() nesting.</span></span><br><span class="line">  <span class="type">int</span> intena;                 <span class="comment">// Were interrupts enabled before push_off()?</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<img src="/2022/07/31/lec11-Thread-Switching/2.png"></li>
+</ol>
+
       
 
       
