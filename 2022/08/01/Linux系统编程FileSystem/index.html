@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Hexo</title>
+  <title>Linux系统编程FileSystem | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="项目地址: https:&#x2F;&#x2F;github.com&#x2F;mmjwxbc&#x2F;APUE&#x2F;tree&#x2F;master&#x2F;FileSystem \  创建-a文件 touch –(代表选项结束) -a touch .&#x2F;-a    目录和文件获取文件属性 stat()  通过文件路径获取属性 面对符号链接文件时获取的是所指向的目标文件的属性   fstat()  面对文件描述符获取属性   lstat()  面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统编程FileSystem">
+<meta property="og:url" content="http://example.com/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="项目地址: https:&#x2F;&#x2F;github.com&#x2F;mmjwxbc&#x2F;APUE&#x2F;tree&#x2F;master&#x2F;FileSystem \  创建-a文件 touch –(代表选项结束) -a touch .&#x2F;-a    目录和文件获取文件属性 stat()  通过文件路径获取属性 面对符号链接文件时获取的是所指向的目标文件的属性   fstat()  面对文件描述符获取属性   lstat()  面">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-08-01T12:35:48.000Z">
+<meta property="article:modified_time" content="2022-08-01T12:39:45.941Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,202 +154,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-Linux系统编程ProcessBasic" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-Linux系统编程FileSystem" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/">Linux系统编程ProcessBasic</a>
-    </h1>
-  
-
-        
-        <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/" class="archive-article-date">
-  	<time datetime="2022-08-01T12:36:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="进程标识符pid"><a href="#进程标识符pid" class="headerlink" title="进程标识符pid"></a>进程标识符pid</h2><ul>
-<li>类型 pid_t</li>
-<li>ps命令</li>
-<li>进程号顺次向下使用</li>
-<li>getpid()</li>
-<li>getppid()</li>
-</ul>
-<h2 id="进程的产生"><a href="#进程的产生" class="headerlink" title="进程的产生"></a>进程的产生</h2><ul>
-<li>fork()<ul>
-<li>同样的进程副本</li>
-<li>执行位置一样</li>
-<li>父子进程的区别<ul>
-<li>fork返回值不一样</li>
-<li>pid不同</li>
-<li>ppid不同</li>
-<li>未决信号和文件锁不继承</li>
-<li>资源利用率清零</li>
-</ul>
-</li>
-<li>init进程<ul>
-<li>pid &#x3D;&#x3D; 1</li>
-<li>所有进程的祖先</li>
-</ul>
-</li>
-<li>调度策略</li>
-<li>.&#x2F;fork1 &gt; &#x2F;tmp&#x2F;out<ul>
-<li>Begin打印两次?<ul>
-<li>输出到文件是全缓冲模式 还没来得及输出就fork导致缓冲区出现两份相同的[pid]Begin()!</li>
-<li>fflush(NULL)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>写时拷贝</li>
-</ul>
-</li>
-<li>vfork()</li>
-</ul>
-<h2 id="进程的消亡及释放资源"><a href="#进程的消亡及释放资源" class="headerlink" title="进程的消亡及释放资源"></a>进程的消亡及释放资源</h2><ul>
-<li>wait()</li>
-<li>waitpid()</li>
-<li>waitid()</li>
-<li>wait3()</li>
-<li>wait4()</li>
-</ul>
-<h2 id="exec函数族"><a href="#exec函数族" class="headerlink" title="exec函数族"></a>exec函数族</h2><ul>
-<li>execl()</li>
-<li>execlp()</li>
-<li>execle()</li>
-<li>execv()</li>
-<li>execvp()</li>
-</ul>
-<h2 id="用户权限和组权限"><a href="#用户权限和组权限" class="headerlink" title="用户权限和组权限"></a>用户权限和组权限</h2><ul>
-<li>r</li>
-<li>e</li>
-<li>s</li>
-<li>文件属性u + s<ul>
-<li>拥有该文件user用户的权限</li>
-</ul>
-</li>
-<li>getuid()</li>
-<li>geteuid()</li>
-<li>getgid()</li>
-<li>getegid()</li>
-<li>setuid()<ul>
-<li>设置effective id</li>
-</ul>
-</li>
-<li>setgid()</li>
-<li>setreuid()</li>
-<li>setregid()</li>
-<li>seteuid()</li>
-<li>setegid()</li>
-</ul>
-<h2 id="解释器文件"><a href="#解释器文件" class="headerlink" title="解释器文件"></a>解释器文件</h2><ul>
-<li>脚本文件<ul>
-<li>装载可执行二进制程序</li>
-<li>加载shell程序执行命令</li>
-</ul>
-</li>
-</ul>
-<h2 id="system"><a href="#system" class="headerlink" title="system"></a>system</h2><ul>
-<li>execute a shell command</li>
-<li>约等于fork exec wait的封装</li>
-</ul>
-<h2 id="进程会计"><a href="#进程会计" class="headerlink" title="进程会计"></a>进程会计</h2><ul>
-<li>acct()</li>
-</ul>
-<h2 id="进程时间"><a href="#进程时间" class="headerlink" title="进程时间"></a>进程时间</h2><ul>
-<li>times()</li>
-</ul>
-<h2 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h2><ul>
-<li>会话session<ul>
-<li>标识sid</li>
-</ul>
-</li>
-<li>终端</li>
-<li>前台进程组<ul>
-<li>最多有一个</li>
-</ul>
-</li>
-<li>后台进程组</li>
-<li>setsid()<ul>
-<li>不能父进程调用</li>
-</ul>
-</li>
-<li>getpgid()<ul>
-<li>设置组id</li>
-</ul>
-</li>
-<li>getpgrp()</li>
-</ul>
-<h2 id="系统日志"><a href="#系统日志" class="headerlink" title="系统日志"></a>系统日志</h2><ul>
-<li>syslogd服务</li>
-<li>openlog()</li>
-<li>syslog()</li>
-<li>closelog()</li>
-<li>sudo tail &#x2F;var&#x2F;log&#x2F;syslog</li>
-<li>单实例守护进程<ul>
-<li>锁文件 &#x2F;var&#x2F;run&#x2F;name.pid</li>
-<li>启动脚本文件 &#x2F;etc&#x2F;rc*</li>
-</ul>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Linux系统编程FileSystem" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/">Linux系统编程FileSystem</a>
+    <h1 class="article-title" itemprop="name">
+      Linux系统编程FileSystem
     </h1>
   
 
@@ -567,6 +383,27 @@
       
 
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
     </div>
     <div class="article-info article-info-index">
       
@@ -574,16 +411,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Linux系统编程ProcessBasic
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BIO/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux系统编程IO</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -603,849 +508,14 @@
 
 
 
-
   
-    <article id="post-Linux系统编程IO" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BIO/">Linux系统编程IO</a>
-    </h1>
   
 
-        
-        <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BIO/" class="archive-article-date">
-  	<time datetime="2022-08-01T12:35:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>学习视频: <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yJ411S7r6?spm_id_from=333.337.search-card.all.click&amp;vd_source=00c6b18ab60f51d86ffd157fe3e231eb">https://www.bilibili.com/video/BV1yJ411S7r6?spm_id_from=333.337.search-card.all.click&amp;vd_source=00c6b18ab60f51d86ffd157fe3e231eb</a> <br>项目地址: <a target="_blank" rel="noopener" href="https://github.com/mmjwxbc/APUE/tree/master/IO">https://github.com/mmjwxbc/APUE/tree/master/IO</a> <br>IO是实现一切的基础</p>
-<h2 id="stdio"><a href="#stdio" class="headerlink" title="stdio"></a>stdio</h2><ul>
-<li><p>error</p>
-<ul>
-<li>不再是全局变量，被私有化，错误映射到出错进程的内存空间当中</li>
-</ul>
-</li>
-<li><p>文件权限</p>
-<ul>
-<li>0666 &amp; ~umask(0002)</li>
-<li>0666    000 110 110 110</li>
-<li>umask   000 000 000 010</li>
-<li>~umask  111 111 111 101</li>
-</ul>
-</li>
-<li><p>FILE *fopen(const char *path, consr char *mode)</p>
-<ul>
-<li>FILE结构体存在位置<ul>
-<li>堆(T)</li>
-<li>栈(F)</li>
-<li>静态区(F)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>int fclose(FILE *fp)</p>
-</li>
-<li><p>字符相关</p>
-<ul>
-<li>int fgetc(FILE *stream)   函数形式<ul>
-<li>int getc(FILE *stream) define形式</li>
-</ul>
-</li>
-<li>int fputc(int c, FILE *stream)</li>
-</ul>
-</li>
-<li><p>字符串相关</p>
-<ul>
-<li>char *gets(char *s)<ul>
-<li>不检查缓冲区溢出</li>
-</ul>
-</li>
-<li>fgets(char *s, int size, FILE *stream)</li>
-<li>fputs(const char *s, FILE *stream)</li>
-</ul>
-</li>
-<li><p>fread()</p>
-</li>
-<li><p>fwrite()</p>
-</li>
-<li><p>printf()</p>
-<ul>
-<li>fprintf()<ul>
-<li>输出重定向</li>
-</ul>
-</li>
-<li>sprintf()<ul>
-<li>类似于itoa</li>
-</ul>
-</li>
-<li>snprintf()</li>
-</ul>
-</li>
-<li><p>scanf()</p>
-<ul>
-<li>fscanf()</li>
-<li>sscanf()</li>
-</ul>
-</li>
-<li><p>操作文件位置指针</p>
-<ul>
-<li>function<ul>
-<li>reposition a stream</li>
-</ul>
-</li>
-<li>fseek(FILE *stream, long offset, int whence)<ul>
-<li>定位</li>
-</ul>
-</li>
-<li>ftell()<ul>
-<li>当前文件指针位置</li>
-</ul>
-</li>
-<li>rewind()<ul>
-<li>重置当前位置指针为零</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>fflush()</p>
-<ul>
-<li>刷新缓冲区</li>
-<li>解决行缓冲</li>
-</ul>
-</li>
-<li><p>缓冲区</p>
-<ul>
-<li>合并系统调用</li>
-<li>分类<ul>
-<li>全缓冲：我们缓存在缓冲区的东西在缓冲区满的时候，才写入磁盘或者我们调用fflush刷新缓冲区才能写入到磁盘。对于全缓冲，如果我们缓冲区没满，或者我们没有手动刷新缓存，那么缓存区的内容是不能写入到磁盘的</li>
-<li>行缓冲：我们标准输入、标准输出都是采用的行缓存，也就是遇到换行符的时候，才会将缓存区的东西写入到磁盘</li>
-<li>无缓存：有的时候，我们希望一些内容在第一时间写入磁盘或者显示出来，比如我们显示错误信息的时候，这时候典型的例子比如标准出错，它就是直接显示出错信息，而不会先放入缓存</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>getline()</p>
-<ul>
-<li>实现原理<ul>
-<li>函数封装<ul>
-<li>malloc  </li>
-<li>realloc</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>临时文件</p>
-<ul>
-<li>char tmpnam(char *s)</li>
-<li>FILE *-tmpfile(void)</li>
-<li>没有指向的时候，自动销毁</li>
-</ul>
-</li>
-</ul>
-<h2 id="sysio"><a href="#sysio" class="headerlink" title="sysio"></a>sysio</h2><ul>
-<li>文件描述符<ul>
-<li>实质是整型数<ul>
-<li>数组下标</li>
-<li>数组元素是指向某结构体的指针</li>
-</ul>
-</li>
-<li>磁盘上的文件由inode唯一标识</li>
-<li>优先使用当前可用范围最小的</li>
-<li>存在于进程空间<ul>
-<li>进程特有</li>
-</ul>
-</li>
-<li>一个fd对应一个结构体</li>
-</ul>
-</li>
-</ul>
-<h3 id="文件IO操作"><a href="#文件IO操作" class="headerlink" title="文件IO操作"></a>文件IO操作</h3><ul>
-<li>int open(const char *patname, int flags, [mode_t mode])<ul>
-<li>O_CREAT必须选择三参形式 因为要指定权限</li>
-<li>C语言没有重载 用的是变参</li>
-</ul>
-</li>
-<li>close(int fd)</li>
-<li>ssize_t read(int fd, void *buf, size_t count)</li>
-<li>ssize_t write(int fd, const void *buf, size_t count)</li>
-<li>off_t lseek(int fd, off_t offset, int whence)</li>
-</ul>
-<h3 id="sysio-和-stdio-的区别"><a href="#sysio-和-stdio-的区别" class="headerlink" title="sysio 和 stdio 的区别"></a>sysio 和 stdio 的区别</h3><ul>
-<li>sysio 响应快</li>
-<li>stdio 吞吐量大</li>
-<li>两者不能混用<ul>
-<li>存在缓冲区 导致文件位置指针不一致</li>
-</ul>
-</li>
-<li>转换<ul>
-<li>fdopen()</li>
-<li>fileno()</li>
-</ul>
-</li>
-<li>exp<ul>
-<li>ab.c</li>
-</ul>
-</li>
-</ul>
-<h3 id="IO效率问题"><a href="#IO效率问题" class="headerlink" title="IO效率问题"></a>IO效率问题</h3><p>BUFSIZE<br>  1024    real    0m30.332s<br>          user    0m1.556s<br>          sys     0m27.560s<br>  2048    real    0m8.909s<br>          user    0m0.761s<br>          sys     0m6.919s<br>  4096    real    0m5.039s<br>          user    0m0.373s<br>          sys     0m4.148s<br>  8192    real    0m3.757s<br>          user    0m0.186s<br>          sys     0m2.973s<br>  16384   real    0m3.437s<br>          user    0m0.112s<br>          sys     0m3.032s<br>  32768   real    0m3.120s<br>          user    0m0.073s<br>          sys     0m2.711s<br>  65536   real    0m2.768s<br>          user    0m0.038s<br>          sys     0m2.358s<br>  131072  real    0m2.279s<br>          user    0m0.021s<br>          sys     0m1.889s<br>  262144  real    0m2.276s<br>          user    0m0.013s<br>          sys     0m1.886s<br>  524288  real    0m2.560s<br>          user    0m0.004s<br>          sys     0m2.185s</p>
-<h3 id="文件共享"><a href="#文件共享" class="headerlink" title="文件共享"></a>文件共享</h3><ul>
-<li>多个任务共同操作一个文件或者协同完成任务</li>
-</ul>
-<h3 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h3><ul>
-<li>不可分割的操作</li>
-<li>作用<ul>
-<li>解决竞争和操作</li>
-</ul>
-</li>
-</ul>
-<h3 id="程序中的重定向"><a href="#程序中的重定向" class="headerlink" title="程序中的重定向"></a>程序中的重定向</h3><p>复制文件描述符</p>
-<ul>
-<li>dup()</li>
-<li>dup2()</li>
-</ul>
-<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><ul>
-<li><p>sync()</p>
-</li>
-<li><p>fsync()</p>
-</li>
-<li><p>fdatasync()</p>
-</li>
-<li><p>管家级别的函数</p>
-<ul>
-<li>fcntl()<ul>
-<li>文件相关的内容</li>
-</ul>
-</li>
-<li>ioctl()<ul>
-<li>设备相关的内容</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>&#x2F;dev&#x2F;fd</p>
-<ul>
-<li>虚目录 显示当前进程的文件描述符信息</li>
-</ul>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BIO/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-ELEMENTARY-SORTS" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/31/ELEMENTARY-SORTS/">ELEMENTARY SORTS</a>
-    </h1>
   
 
-        
-        <a href="/2022/07/31/ELEMENTARY-SORTS/" class="archive-article-date">
-  	<time datetime="2022-07-31T13:04:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Sorting-Introduction"><a href="#Sorting-Introduction" class="headerlink" title="Sorting Introduction"></a>Sorting Introduction</h2><p>后端用回调机制实现对客户端不同数据类型排序 <br>将函数作为实参传递给其他函数 <br>java通过对象实现Comparable接口调用compareTo方法实现sort方法不同数据类型排序</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Comparable</span>&lt;Item&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Item that)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>全序关系: 自然数、小数、时间、字母顺序 <br>剪刀石头布不具有全序关系<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.1.1.png"><br>Date类实现Comparable接口<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.1.2.png"></p>
-<h2 id="Selection-Sort"><a href="#Selection-Sort" class="headerlink" title="Selection Sort"></a>Selection Sort</h2><p>从第i项开始，从右边找到最小的元素交换，然后i向右移动直至末尾<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.2.1.png"></p>
-<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p><img src="/2022/07/31/ELEMENTARY-SORTS/2.2.2.png"></p>
-<h2 id="Insertion-Sort"><a href="#Insertion-Sort" class="headerlink" title="Insertion Sort"></a>Insertion Sort</h2><p>将第i个元素向左比较直至大于左边排好序列中的一个数，此时i及其左边的元素维持了不变性即升序或者降序<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.3.1.png"></p>
-<h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>黑色代表需要比较的、红色代表最终到达位置 <br>每次大概比较每一行中一半的元素所以标记次数 &#x3D; 1&#x2F;2 * 1&#x2F;2 * N^2 &#x3D; 1&#x2F;4N^2<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.3.2.png"><br>插入排序对于部分有序的数据的排序时间十分优秀，达到线性复杂度</p>
-<h2 id="Shellsort-希尔排序"><a href="#Shellsort-希尔排序" class="headerlink" title="Shellsort 希尔排序"></a>Shellsort 希尔排序</h2><p>通过h排序构造有序交叉子序列，以减少最后进行插入排序的时候的比较次数<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.4.1.png"></p>
-<h3 id="h排序的选择"><a href="#h排序的选择" class="headerlink" title="h排序的选择"></a>h排序的选择</h3><ol>
-<li>不能选用二次幂：不会交换奇偶位置的数据直至最后进行插入排序，效率很低<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Shell</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sort</span><span class="params">(Comparable[] a)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> a.length;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(h &lt; N/<span class="number">3</span>) &#123;</span><br><span class="line">            h = <span class="number">3</span>*h + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(h &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> h; i &lt; N; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &gt;= h &amp;&amp; less(a[j], a[j-h]); j -= h)</span><br><span class="line">                    exch(a, j, j - h);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            h = h/<span class="number">3</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">less</span><span class="params">(Comparable v, Comparable w)</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">exch</span><span class="params">(Comparable[] a, <span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/2022/07/31/ELEMENTARY-SORTS/2.4.2.png"></li>
-</ol>
-<h2 id="Shuffling-洗牌应用"><a href="#Shuffling-洗牌应用" class="headerlink" title="Shuffling 洗牌应用"></a>Shuffling 洗牌应用</h2><p>创建随机数并对随机数进行排序从而达到洗牌效果<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.5.1.png"><br>类似于插入排序的洗牌算法(利用随机性的线性时间洗牌算法)<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.5.2.png"></p>
-<h2 id="Convex-hull"><a href="#Convex-hull" class="headerlink" title="Convex hull"></a>Convex hull</h2><p>凸包是包含所有点的最小的凸状集合(最小的能圈起来所有点的凸多边形)<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.6.1.png"><br>葛立恒扫描法 </p>
-<ol>
-<li>将p点作为起始点(也就是y轴坐标值最小的点)</li>
-<li>将以p为起点的极角从小到大进行排序</li>
-<li>从p点开始逆时针方向寻找下一个点(注意只能逆时针方向)，下一个点寻找下下个点的过程也必须是逆时针方向，否则该点不是凸包上的点，需要回溯<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.6.2.png"><br>如何判断是顺时针或逆时针方向<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.6.3.png"><br><img src="/2022/07/31/ELEMENTARY-SORTS/2.6.4.png"></li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/31/ELEMENTARY-SORTS/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-lec11-Thread-Switching" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/31/lec11-Thread-Switching/">lec11:Thread-Switching</a>
-    </h1>
   
 
-        
-        <a href="/2022/07/31/lec11-Thread-Switching/" class="archive-article-date">
-  	<time datetime="2022-07-31T06:47:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="xv6线程切换"><a href="#xv6线程切换" class="headerlink" title="xv6线程切换"></a>xv6线程切换</h2><ol>
-<li>xv6会将接收到定时器中断的内核线程的内核寄存器保存到context对象<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Saved registers for kernel context switches.</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">context</span> &#123;</span></span><br><span class="line">  uint64 ra;</span><br><span class="line">  uint64 sp;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// callee-saved</span></span><br><span class="line">  uint64 s0;</span><br><span class="line">  uint64 s1;</span><br><span class="line">  uint64 s2;</span><br><span class="line">  uint64 s3;</span><br><span class="line">  uint64 s4;</span><br><span class="line">  uint64 s5;</span><br><span class="line">  uint64 s6;</span><br><span class="line">  uint64 s7;</span><br><span class="line">  uint64 s8;</span><br><span class="line">  uint64 s9;</span><br><span class="line">  uint64 s10;</span><br><span class="line">  uint64 s11;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
-<li>切换另一个线程且状态处于RUNABLE(表明该程序的用户空间状态已经保存到trapframe中), 恢复该线程的context对象</li>
-<li>新的线程继续完成中断处理程序</li>
-<li>恢复trapframe, 返回至该进程的用户空间<br>即使是用户进程也需要切换至内核执行内核线程进行线程切换</li>
-</ol>
-<h3 id="example-ls进程切换至cat进程"><a href="#example-ls进程切换至cat进程" class="headerlink" title="example: ls进程切换至cat进程"></a>example: ls进程切换至cat进程</h3><ol>
-<li>ls进程接收到定时器中断，从用户空间进程切换到内核，trampoline代码将用户寄存器保存于用户进程对应的trapframe对象中</li>
-<li>ls内核线程运行usertrap</li>
-<li>yield让出CPU，调用swtch()函数</li>
-<li>swtch()函数恢复当前CPU的context，在调度器线程的context下执行schedulder函数中</li>
-<li>将ls进程设置为RUNABLE，寻找到下一个RUNABLE进程cat</li>
-<li>保存调度器自身的寄存器到context对象</li>
-<li>恢复cat进程的context对象</li>
-<li>执行cat内核线程的中断处理程序</li>
-<li>返回用户空间，执行cat进程<br><img src="/2022/07/31/lec11-Thread-Switching/1.png"></li>
-</ol>
-<h3 id="context对象保存位置"><a href="#context对象保存位置" class="headerlink" title="context对象保存位置"></a>context对象保存位置</h3><ol>
-<li>用户进程的内核线程的context对象保存至proc结构体中</li>
-<li>调度器线程的context对象保存至cpu结构体中<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">proc</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> <span class="title">lock</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// p-&gt;lock must be held when using these:</span></span><br><span class="line">  <span class="class"><span class="keyword">enum</span> <span class="title">procstate</span> <span class="title">state</span>;</span>        <span class="comment">// Process state</span></span><br><span class="line">  <span class="type">void</span> *chan;                  <span class="comment">// If non-zero, sleeping on chan</span></span><br><span class="line">  <span class="type">int</span> killed;                  <span class="comment">// If non-zero, have been killed</span></span><br><span class="line">  <span class="type">int</span> xstate;                  <span class="comment">// Exit status to be returned to parent&#x27;s wait</span></span><br><span class="line">  <span class="type">int</span> pid;                     <span class="comment">// Process ID</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// wait_lock must be held when using this:</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">parent</span>;</span>         <span class="comment">// Parent process</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// these are private to the process, so p-&gt;lock need not be held.</span></span><br><span class="line">  uint64 kstack;               <span class="comment">// Virtual address of kernel stack</span></span><br><span class="line">  uint64 sz;                   <span class="comment">// Size of process memory (bytes)</span></span><br><span class="line">  <span class="type">pagetable_t</span> pagetable;       <span class="comment">// User page table</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">trapframe</span> *<span class="title">trapframe</span>;</span> <span class="comment">// data page for trampoline.S</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">context</span> <span class="title">context</span>;</span>      <span class="comment">// swtch() here to run process</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">file</span> *<span class="title">ofile</span>[<span class="title">NOFILE</span>];</span>  <span class="comment">// Open files</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">inode</span> *<span class="title">cwd</span>;</span>           <span class="comment">// Current directory</span></span><br><span class="line">  <span class="type">char</span> name[<span class="number">16</span>];               <span class="comment">// Process name (debugging)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">proc</span>;</span>          <span class="comment">// The process running on this cpu, or null.</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">context</span> <span class="title">context</span>;</span>     <span class="comment">// swtch() here to enter scheduler().</span></span><br><span class="line">  <span class="type">int</span> noff;                   <span class="comment">// Depth of push_off() nesting.</span></span><br><span class="line">  <span class="type">int</span> intena;                 <span class="comment">// Were interrupts enabled before push_off()?</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<img src="/2022/07/31/lec11-Thread-Switching/2.png"></li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/31/lec11-Thread-Switching/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-xv6-lock" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/31/xv6-lock/">xv6-lock</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/31/xv6-lock/" class="archive-article-date">
-  	<time datetime="2022-07-31T03:03:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><ul>
-<li>临界区域(critical section)<ul>
-<li>acquire和release之间的指令序列</li>
-</ul>
-</li>
-<li>不变量<ul>
-<li>跨操作维护的数据结构属性</li>
-<li>下列代码中list就是其中的不变量，l-&gt;next指向list（注：则此时list不再指向列表中的第一个元素，即违反了不变量），但是list还没有指向l，两个操作是跨操作的，为了维持其数据结构的属性（也就是list指向列表第一个元素），需要进行锁保护<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">element</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">element</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">element</span> *<span class="title">list</span> =</span> <span class="number">0</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">lock</span> <span class="title">listlock</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> </span><br><span class="line"><span class="title function_">push</span><span class="params">(<span class="type">int</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">element</span> *<span class="title">l</span>;</span></span><br><span class="line"></span><br><span class="line">    l = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span> *l);</span><br><span class="line">    l-&gt;data = data;</span><br><span class="line">    acquire(&amp;listlock);</span><br><span class="line">    l-&gt;next = <span class="built_in">list</span>;</span><br><span class="line">    <span class="built_in">list</span> = l; </span><br><span class="line">    release(&amp;listlock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>locked为零时表示锁可用 \</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">acquire</span><span class="params">(<span class="keyword">struct</span> spinlock* lk)</span> <span class="comment">// does not work!</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">for</span>(;;) &#123;</span><br><span class="line">    <span class="keyword">if</span>(lk-&gt;locked == <span class="number">0</span>) &#123;</span><br><span class="line">      lk-&gt;locked = <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>if(lk-locked &#x3D;&#x3D; 0)并不能保证互斥，因为可能有多个CPU同时到达这一语句，在RISC-V中提供了指令amoswap r, a来保证指令原子化，交换内存地址a中与寄存器r中的值</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">acquire</span><span class="params">(<span class="keyword">struct</span> spinlock* lk)</span> <span class="comment">// does not work!</span></span><br><span class="line">&#123;</span><br><span class="line">    ···</span><br><span class="line">    <span class="keyword">while</span>(__sync_lock_test_and_set(&amp;lk-&gt;locked, <span class="number">1</span>) != <span class="number">0</span>)</span><br><span class="line">        ;</span><br><span class="line">    ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>每次迭代将1与lk-&gt;locked进行swap操作，并检查lk-&gt;locked之前的值。如果之前为0，swap已经把lk-&gt;locked设置为1，那么我们就获得了锁；如果前一个值是1，那么另一个CPU持有锁，我们原子地将1与lk-&gt;locked进行swap的事实并没有改变它的值</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// spinlock.h</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> &#123;</span></span><br><span class="line">  uint locked;       <span class="comment">// Is the lock held?</span></span><br><span class="line">  <span class="comment">// For debugging:</span></span><br><span class="line">  <span class="type">char</span> *name;        <span class="comment">// Name of lock.</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> *<span class="title">cpu</span>;</span>   <span class="comment">// The cpu holding the lock.</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="锁使用条件"><a href="#锁使用条件" class="headerlink" title="锁使用条件"></a>锁使用条件</h3><ol>
-<li>任何时候可以被一个CPU写入，同时又可以被另一个CPU读写的变量</li>
-<li>如果一个不变量涉及多个内存位置，通常所有这些位置都需要由一个锁来保护，以确保不变量不被改变</li>
-</ol>
-<h3 id="死锁和锁排序"><a href="#死锁和锁排序" class="headerlink" title="死锁和锁排序"></a>死锁和锁排序</h3><p>为避免死锁，获取锁的顺序必须一致 <br>锁和中断处理函数也有可能出现死锁。<br>自旋锁和中断的交互引发了潜在的危险。假设sys_sleep持有tickslock，并且它的CPU被计时器中断中断。clockintr会尝试获取tickslock，意识到它被持有后等待释放。在这种情况下，tickslock永远不会被释放：只有sys_sleep可以释放它，但是sys_sleep直到clockintr返回前不能继续运行。所以CPU会死锁，任何需要锁的代码也会冻结 <br>如果一个自旋锁被中断处理程序所使用，那么CPU必须保证在启用中断的情况下永远不能持有该锁。<br>Xv6更保守：当CPU获取任何锁时，xv6总是禁用该CPU上的中断。\</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">acquire</span><span class="params">(<span class="keyword">struct</span> spinlock *lk)</span></span><br><span class="line">&#123;</span><br><span class="line">  ···</span><br><span class="line">  push_off(); <span class="comment">// disable interrupts to avoid deadlock.</span></span><br><span class="line">  ···</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">push_off</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> old = intr_get();</span><br><span class="line"></span><br><span class="line">  intr_off();</span><br><span class="line">  <span class="keyword">if</span>(mycpu()-&gt;noff == <span class="number">0</span>)</span><br><span class="line">    mycpu()-&gt;intena = old;</span><br><span class="line">  mycpu()-&gt;noff += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当CPU未持有自旋锁时，xv6重新启用中断；它必须做一些记录来处理嵌套的临界区域</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">pop_off</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> *<span class="title">c</span> =</span> mycpu();</span><br><span class="line">  <span class="keyword">if</span>(intr_get())</span><br><span class="line">    panic(<span class="string">&quot;pop_off - interruptible&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span>(c-&gt;noff &lt; <span class="number">1</span>)</span><br><span class="line">    panic(<span class="string">&quot;pop_off&quot;</span>);</span><br><span class="line">  c-&gt;noff -= <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span>(c-&gt;noff == <span class="number">0</span> &amp;&amp; c-&gt;intena)</span><br><span class="line">    intr_on();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>acquire之前调用push_off、release之后调用pop_off，否则会造成死锁</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">acquire</span><span class="params">(<span class="keyword">struct</span> spinlock *lk)</span></span><br><span class="line">&#123;</span><br><span class="line">  push_off(); <span class="comment">// disable interrupts to avoid deadlock.</span></span><br><span class="line">  <span class="keyword">if</span>(holding(lk))</span><br><span class="line">    panic(<span class="string">&quot;acquire&quot;</span>);</span><br><span class="line">  <span class="keyword">while</span>(__sync_lock_test_and_set(&amp;lk-&gt;locked, <span class="number">1</span>) != <span class="number">0</span>)</span><br><span class="line">    ;</span><br><span class="line">  __sync_synchronize();</span><br><span class="line">  lk-&gt;cpu = mycpu();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">release</span><span class="params">(<span class="keyword">struct</span> spinlock *lk)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(!holding(lk))</span><br><span class="line">    panic(<span class="string">&quot;release&quot;</span>);</span><br><span class="line">  lk-&gt;cpu = <span class="number">0</span>;</span><br><span class="line">  __sync_synchronize();</span><br><span class="line">  __sync_lock_release(&amp;lk-&gt;locked);</span><br><span class="line"></span><br><span class="line">  pop_off();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/31/xv6-lock/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-6-s081-Lab-Copy-on-Write-Fork-for-xv6" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/">6.s081 Lab: Copy-on-Write Fork for xv6</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/" class="archive-article-date">
-  	<time datetime="2022-07-23T12:14:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="uvmcopy-函数"><a href="#uvmcopy-函数" class="headerlink" title="uvmcopy()函数"></a>uvmcopy()函数</h3><p>将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-NetworkLayer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/22/NetworkLayer/">NetworkLayer</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/22/NetworkLayer/" class="archive-article-date">
-  	<time datetime="2022-07-22T13:41:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="4-3-网际协议"><a href="#4-3-网际协议" class="headerlink" title="4.3 网际协议"></a>4.3 网际协议</h2><h3 id="IP数据报格式"><a href="#IP数据报格式" class="headerlink" title="IP数据报格式"></a>IP数据报格式</h3><ul>
-<li>首部长度<ul>
-<li>指IP首部占32bit字的数目(字段行的数目)</li>
-</ul>
-</li>
-<li>寿命(TTL)<ul>
-<li>防止数据包在网络中循环</li>
-<li>被抛弃后路由器将向主机发送ICMP报</li>
-</ul>
-</li>
-<li>上层协议w<ul>
-<li>指定数据部分应交给的运输层协议</li>
-</ul>
-</li>
-<li>片偏移<ul>
-<li>分片载荷相对于原来数据包载荷的位置</li>
-</ul>
-</li>
-</ul>
-<h3 id="数据包分片"><a href="#数据包分片" class="headerlink" title="数据包分片"></a>数据包分片</h3><ul>
-<li>解决MTU大小不一致</li>
-</ul>
-<p><img src="/2022/07/22/NetworkLayer/4.3.2.png"></p>
-<h3 id="IPV4编制"><a href="#IPV4编制" class="headerlink" title="IPV4编制"></a>IPV4编制</h3><ul>
-<li>用于标记接口<ul>
-<li>接口<ul>
-<li>主机</li>
-<li>路由器</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h3><ol>
-<li>一个子网内的节点，其IP地址高位部分相同，则这些节点构成子网</li>
-<li>无需路由器介入，子网内各主机通过物理相联</li>
-</ol>
-<h3 id="IP地址分类"><a href="#IP地址分类" class="headerlink" title="IP地址分类"></a>IP地址分类</h3><p>路由是依靠网络号进行路由的 <br>A、B、C类地址为单播地址<br><img src="/2022/07/22/NetworkLayer/4.3.3.png"><br><img src="/2022/07/22/NetworkLayer/4.3.4.png"><br><img src="/2022/07/22/NetworkLayer/4.3.5.png"></p>
-<h4 id="无类类间路由"><a href="#无类类间路由" class="headerlink" title="无类类间路由"></a>无类类间路由</h4><p><br>CIDR: Classless InterDomain Routing <br>子网部分可以在任意位置，依靠子网掩码划分子网部分长度<br><img src="/2022/07/22/NetworkLayer/4.3.6.png"></p>
-<h4 id="转发表与转发技术"><a href="#转发表与转发技术" class="headerlink" title="转发表与转发技术"></a>转发表与转发技术</h4><p><br>转发表有四个字段(目标子网号、子网掩码、下一跳、输出端口)<br><img src="/2022/07/22/NetworkLayer/4.3.7.png"></p>
-<h3 id="如何获得一个IP地址"><a href="#如何获得一个IP地址" class="headerlink" title="如何获得一个IP地址"></a>如何获得一个IP地址</h3><ol>
-<li>通过配置文件配置 ip地址、子网掩码、默认网关、DNS服务器</li>
-<li>通过DHCP: Dynamic Host Configuration Protocol <br>允许主机加入网络的时候动态地从服务器获取IP地址 <br>通过全为零的IP地址发送报文<ol>
-<li>为什么需要两次传播？ <br>因为可能存在多台DHCP服务器，需要选择其中一个IP地址<br><img src="/2022/07/22/NetworkLayer/4.3.8.png"><br><img src="/2022/07/22/NetworkLayer/4.3.9.png"></li>
-</ol>
-</li>
-</ol>
-<h3 id="如何获得一块编址"><a href="#如何获得一块编址" class="headerlink" title="如何获得一块编址"></a>如何获得一块编址</h3><p>通过 ICANN: Internet Corporation for Assigned Names and Numbers</p>
-<h3 id="路由聚集"><a href="#路由聚集" class="headerlink" title="路由聚集"></a>路由聚集</h3><p>更小的子网向更高的子网进行路由通告，再向更高的进行子网通告从而路由聚集 <br>若多个表项匹配成功，则选择最长前缀匹配<br><img src="/2022/07/22/NetworkLayer/4.3.10.png"></p>
-<h3 id="NAT-Network-Address-Translation"><a href="#NAT-Network-Address-Translation" class="headerlink" title="NAT: Network Address Translation"></a>NAT: Network Address Translation</h3><p>网络地址转换 <br>内网地址与源IP地址相互转换<br><img src="/2022/07/22/NetworkLayer/4.3.11.png"><br><img src="/2022/07/22/NetworkLayer/4.3.12.png"><br><img src="/2022/07/22/NetworkLayer/4.3.13.png"><br><img src="/2022/07/22/NetworkLayer/4.3.14.png"><br><img src="/2022/07/22/NetworkLayer/4.3.15.png"></p>
-<h3 id="NAT穿越问题-外网主机端口如何访问内网某主机端口"><a href="#NAT穿越问题-外网主机端口如何访问内网某主机端口" class="headerlink" title="NAT穿越问题 外网主机端口如何访问内网某主机端口"></a>NAT穿越问题 外网主机端口如何访问内网某主机端口</h3><p><img src="/2022/07/22/NetworkLayer/4.3.16.png"><br><img src="/2022/07/22/NetworkLayer/4.3.17.png"><br><img src="/2022/07/22/NetworkLayer/4.3.18.png"></p>
-<h2 id="通用转发和SDN"><a href="#通用转发和SDN" class="headerlink" title="通用转发和SDN"></a>通用转发和SDN</h2><p><img src="/2022/07/22/NetworkLayer/4.4.1.png"><br>SDN：软件定义网络 <br>传统方式下路由器只能进行转发，SDN方式下还可以进行丢弃、泛洪、修改字段<br><img src="/2022/07/22/NetworkLayer/4.4.2.png"><br><img src="/2022/07/22/NetworkLayer/4.4.3.png"><br><img src="/2022/07/22/NetworkLayer/4.4.4.png"><br><img src="/2022/07/22/NetworkLayer/4.4.5.png"><br><img src="/2022/07/22/NetworkLayer/4.4.6.png"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/22/NetworkLayer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/22/test/">test</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/22/test/" class="archive-article-date">
-  	<time datetime="2022-07-22T11:45:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="李诗韵是大sb"><a href="#李诗韵是大sb" class="headerlink" title="李诗韵是大sb"></a>李诗韵是大sb</h1>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/22/test/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/22/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/22/hello-world/" class="archive-article-date">
-  	<time datetime="2022-07-22T11:43:15.295Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/22/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -1468,8 +538,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
