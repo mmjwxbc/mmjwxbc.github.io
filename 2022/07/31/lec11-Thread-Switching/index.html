@@ -16,9 +16,10 @@
 <meta property="og:description" content="xv6线程切换 xv6会将接收到定时器中断的内核线程的内核寄存器保存到context对象12345678910111213141516171819&#x2F;&#x2F; Saved registers for kernel context switches.struct context &amp;#123;  uint64 ra;  uint64 sp;  &#x2F;&#x2F; callee-saved  uint64 s0;  uint">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2022/07/31/lec11-Thread-Switching/1.png">
+<meta property="og:image" content="http://example.com/2022/07/31/lec11-Thread-Switching/3.png">
 <meta property="og:image" content="http://example.com/2022/07/31/lec11-Thread-Switching/2.png">
 <meta property="article:published_time" content="2022-07-31T06:47:31.000Z">
-<meta property="article:modified_time" content="2022-08-01T07:45:36.430Z">
+<meta property="article:modified_time" content="2022-08-02T11:54:16.494Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2022/07/31/lec11-Thread-Switching/1.png">
@@ -192,7 +193,7 @@
 <li>保存调度器自身的寄存器到context对象</li>
 <li>恢复cat进程的context对象</li>
 <li>执行cat内核线程的中断处理程序</li>
-<li>返回用户空间，执行cat进程<br><img src="/2022/07/31/lec11-Thread-Switching/1.png"></li>
+<li>返回用户空间，执行cat进程<br><img src="/2022/07/31/lec11-Thread-Switching/1.png"><br><img src="/2022/07/31/lec11-Thread-Switching/3.png"></li>
 </ol>
 <h3 id="context对象保存位置"><a href="#context对象保存位置" class="headerlink" title="context对象保存位置"></a>context对象保存位置</h3><ol>
 <li>用户进程的内核线程的context对象保存至proc结构体中</li>
