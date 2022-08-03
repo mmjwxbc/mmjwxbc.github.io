@@ -152,6 +152,69 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CS144-lab2翻译" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/">CS144:lab2翻译</a>
+    </h1>
+  
+
+        
+        <a href="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/" class="archive-article-date">
+  	<time datetime="2022-08-03T12:18:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-001.jpg"><br><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-002.jpg"><br><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-003.jpg"><br><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-004.jpg"><br><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-005.jpg"><br><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-006.jpg"><br><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-007.jpg"><br><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-008.jpg"><br><img src="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/Lab%20Checkpoint%202-page-009.jpg"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-网络层：控制平面" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -172,7 +235,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="路由选择算法"><a href="#路由选择算法" class="headerlink" title="路由选择算法"></a>路由选择算法</h2>
       
 
       
@@ -240,6 +303,8 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">V</span><span class="params">(<span class="keyword">struct</span> semaphore* s)</span> &#123;</span><br><span class="line">    acquire(&amp;s-&gt;lock);</span><br><span class="line">    s-&gt;count += <span class="number">1</span>;</span><br><span class="line">    wakeup(s);  <span class="comment">// !pay attention</span></span><br><span class="line">    release(&amp;s-&gt;lock);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">P</span><span class="params">(<span class="keyword">struct</span> semaphore* s)</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (s-&gt;count == <span class="number">0</span>)</span><br><span class="line">        sleep(s);  <span class="comment">// !pay attention</span></span><br><span class="line">    acquire(&amp;s-&gt;lock);</span><br><span class="line">    s-&gt;count -= <span class="number">1</span>;</span><br><span class="line">    release(&amp;s-&gt;lock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下列代码会造成死锁（获取锁后进入休眠）</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">V</span><span class="params">(<span class="keyword">struct</span> semaphore* s)</span> &#123;</span><br><span class="line">    acquire(&amp;s-&gt;lock);</span><br><span class="line">    s-&gt;count += <span class="number">1</span>;</span><br><span class="line">    wakeup(s);</span><br><span class="line">    release(&amp;s-&gt;lock);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">P</span><span class="params">(<span class="keyword">struct</span> semaphore* s)</span> &#123;</span><br><span class="line">    acquire(&amp;s-&gt;lock);  <span class="comment">// !pay attention</span></span><br><span class="line">    <span class="keyword">while</span> (s-&gt;count == <span class="number">0</span>)</span><br><span class="line">        sleep(s);</span><br><span class="line">    s-&gt;count -= <span class="number">1</span>;</span><br><span class="line">    release(&amp;s-&gt;lock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="wait-exit和kill"><a href="#wait-exit和kill" class="headerlink" title="wait, exit和kill"></a>wait, exit和kill</h2>
       
 
       
@@ -247,6 +312,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MIT6.S081</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -1336,69 +1412,6 @@
 
 
   
-    <article id="post-6-s081-Lab-Copy-on-Write-Fork-for-xv6" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/">6.s081 Lab: Copy-on-Write Fork for xv6</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/" class="archive-article-date">
-  	<time datetime="2022-07-23T12:14:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="uvmcopy-函数"><a href="#uvmcopy-函数" class="headerlink" title="uvmcopy()函数"></a>uvmcopy()函数</h3><p>将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1494,6 +1507,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
