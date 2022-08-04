@@ -152,6 +152,150 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-xv6-FileSystem" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/04/xv6-FileSystem/">xv6:FileSystem</a>
+    </h1>
+  
+
+        
+        <a href="/2022/08/04/xv6-FileSystem/" class="archive-article-date">
+  	<time datetime="2022-08-04T02:50:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><p>文件系统的目的是组织和存储数据，支持用户和应用程序之间的数据共享，以及持久性，以便在重新启动后数据仍然可用。 </p>
+<table>
+<thead>
+<tr>
+<th>文件系统七层模型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件描述符 (File descriptor)</td>
+</tr>
+<tr>
+<td>路径名 (Pathname)</td>
+</tr>
+<tr>
+<td>目录 (Directory)</td>
+</tr>
+<tr>
+<td>索引节点 (Inode)</td>
+</tr>
+<tr>
+<td>日志 (Logging)</td>
+</tr>
+<tr>
+<td>缓冲区高速缓存 (Buffer cache)</td>
+</tr>
+<tr>
+<td>磁盘 (Disk)</td>
+</tr>
+</tbody></table>
+<ol>
+<li>磁盘层读取和写入virtio硬盘上的块</li>
+<li>缓冲区高速缓存层缓存磁盘块并同步对它们的访问，确保每次只有一个内核进程可以修改存储在任何特定块中的数据</li>
+<li>日志记录层允许更高层在一次事务（transaction）中将更新包装到多个块，并确保在遇到崩溃时自动更新这些块（即，所有块都已更新或无更新）</li>
+<li>索引结点层提供单独的文件，每个文件表示为一个索引结点，其中包含唯一的索引号（i-number）和一些保存文件数据的块</li>
+<li>目录层将每个目录实现为一种特殊的索引结点，其内容是一系列目录项，每个目录项包含一个文件名和索引号</li>
+<li>路径名层提供了分层路径名，如&#x2F;usr&#x2F;rtm&#x2F;xv6&#x2F;fs.c，并通过递归查找来解析它们</li>
+<li>文件描述符层使用文件系统接口抽象了许多Unix资源（例如，管道、设备、文件等）<br>文件系统不使用块0（它保存引导扇区）。块1称为超级块：它包含有关文件系统的元数据（文件系统大小（以块为单位）、数据块数、索引节点数和日志中的块数）。从2开始的块保存日志。日志之后是索引节点，每个块有多个索引节点。然后是位图块，跟踪正在使用的数据块。其余的块是数据块：每个都要么在位图块中标记为空闲，要么保存文件或目录的内容。超级块由一个名为mkfs的单独的程序填充，该程序构建初始文件系统。<br><img src="/2022/08/04/xv6-FileSystem/1.png"></li>
+</ol>
+<h2 id="Buffer-cache层"><a href="#Buffer-cache层" class="headerlink" title="Buffer cache层"></a>Buffer cache层</h2><p>两个任务：</p>
+<ol>
+<li>同步对磁盘块的访问，以确保磁盘块在内存中只有一个副本，并且一次只有一个内核线程使用该副本</li>
+<li>缓存常用块，以便不需要从慢速磁盘重新读取它们</li>
+</ol>
+<p>函数：</p>
+<ol>
+<li><p>binit() 通过头插法构建双向链表保存缓冲块的信息</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">binit</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">buf</span> *<span class="title">b</span>;</span></span><br><span class="line"></span><br><span class="line">  initlock(&amp;bcache.lock, <span class="string">&quot;bcache&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create linked list of buffers</span></span><br><span class="line">  bcache.head.prev = &amp;bcache.head;</span><br><span class="line">  bcache.head.next = &amp;bcache.head;</span><br><span class="line">  <span class="keyword">for</span>(b = bcache.buf; b &lt; bcache.buf+NBUF; b++)&#123;</span><br><span class="line">    b-&gt;next = bcache.head.next;</span><br><span class="line">    b-&gt;prev = &amp;bcache.head;</span><br><span class="line">    initsleeplock(&amp;b-&gt;lock, <span class="string">&quot;buffer&quot;</span>);</span><br><span class="line">    bcache.head.next-&gt;prev = b;</span><br><span class="line">    bcache.head.next = b;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/04/xv6-FileSystem/2.png"></p>
+</li>
+<li><p>bget() 获取缓冲区一个buf块;<br>查找未在使用中的缓冲区（b-&gt;refcnt &#x3D; 0）：任何这样的缓冲区都可以使用。Bget编辑缓冲区元数据以记录新设备和扇区号，并获取其睡眠锁。注意，b-&gt;valid &#x3D; 0的布置确保了bread将从磁盘读取块数据，而不是错误地使用缓冲区以前的内容</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">struct</span> buf*</span><br><span class="line"><span class="title function_">bget</span><span class="params">(uint dev, uint blockno)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">buf</span> *<span class="title">b</span>;</span></span><br><span class="line"></span><br><span class="line">  acquire(&amp;bcache.lock);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Is the block already cached?</span></span><br><span class="line">  <span class="keyword">for</span>(b = bcache.head.next; b != &amp;bcache.head; b = b-&gt;next)&#123;</span><br><span class="line">    <span class="keyword">if</span>(b-&gt;dev == dev &amp;&amp; b-&gt;blockno == blockno)&#123;</span><br><span class="line">      b-&gt;refcnt++;</span><br><span class="line">      release(&amp;bcache.lock);</span><br><span class="line">      acquiresleep(&amp;b-&gt;lock);</span><br><span class="line">      <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Not cached.</span></span><br><span class="line">  <span class="comment">// Recycle the least recently used (LRU) unused buffer.</span></span><br><span class="line">  <span class="keyword">for</span>(b = bcache.head.prev; b != &amp;bcache.head; b = b-&gt;prev)&#123;</span><br><span class="line">    <span class="keyword">if</span>(b-&gt;refcnt == <span class="number">0</span>) &#123;</span><br><span class="line">      b-&gt;dev = dev;</span><br><span class="line">      b-&gt;blockno = blockno;</span><br><span class="line">      b-&gt;valid = <span class="number">0</span>;</span><br><span class="line">      b-&gt;refcnt = <span class="number">1</span>;</span><br><span class="line">      release(&amp;bcache.lock);</span><br><span class="line">      acquiresleep(&amp;b-&gt;lock);</span><br><span class="line">      <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  panic(<span class="string">&quot;bget: no buffers&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>bread() 获取一个buf，其中包含一个可以在内存中读取或修改的块的副本；Buffer cache每个缓冲区使用一个睡眠锁，以确保每个缓冲区（因此也是每个磁盘块）每次只被一个线程使用，若其他现场也想使用该buf块会进入SLEEPING状态；返回一个上锁的缓冲区</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> buf*</span><br><span class="line"><span class="title function_">bread</span><span class="params">(uint dev, uint blockno)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">buf</span> *<span class="title">b</span>;</span></span><br><span class="line"></span><br><span class="line">  b = bget(dev, blockno);</span><br><span class="line">  <span class="keyword">if</span>(!b-&gt;valid) &#123;</span><br><span class="line">    virtio_disk_rw(b, <span class="number">0</span>);</span><br><span class="line">    b-&gt;valid = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Buffer cache中保存磁盘块的缓冲区数量固定，这意味着如果文件系统请求还未存放在缓存中的块，Buffer cache必须回收当前保存其他块内容的缓冲区。Buffer cache为新块回收最近使用最少的缓冲区;移动缓冲区会使列表按缓冲区的使用频率排序（意思是释放）：列表中的第一个缓冲区是最近使用的，最后一个是最近使用最少的。</p>
+</li>
+<li><p>bwrite() 将修改后的缓冲区写入磁盘上的相应块</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">bwrite</span><span class="params">(<span class="keyword">struct</span> buf *b)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(!holdingsleep(&amp;b-&gt;lock))</span><br><span class="line">    panic(<span class="string">&quot;bwrite&quot;</span>);</span><br><span class="line">  virtio_disk_rw(b, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>brelse() 释放块的睡眠锁，如果该块的引用为0则将他放入链表头部</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">brelse</span><span class="params">(<span class="keyword">struct</span> buf *b)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(!holdingsleep(&amp;b-&gt;lock))</span><br><span class="line">    panic(<span class="string">&quot;brelse&quot;</span>);</span><br><span class="line"></span><br><span class="line">  releasesleep(&amp;b-&gt;lock);</span><br><span class="line"></span><br><span class="line">  acquire(&amp;bcache.lock);</span><br><span class="line">  b-&gt;refcnt--;</span><br><span class="line">  <span class="keyword">if</span> (b-&gt;refcnt == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// no one is waiting for it.</span></span><br><span class="line">    b-&gt;next-&gt;prev = b-&gt;prev;</span><br><span class="line">    b-&gt;prev-&gt;next = b-&gt;next;</span><br><span class="line">    b-&gt;next = bcache.head.next;</span><br><span class="line">    b-&gt;prev = &amp;bcache.head;</span><br><span class="line">    bcache.head.next-&gt;prev = b;</span><br><span class="line">    bcache.head.next = b;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  release(&amp;bcache.lock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>buf结构体</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">buf</span> &#123;</span></span><br><span class="line">  <span class="type">int</span> valid;   <span class="comment">// 表示缓冲区是否包含块的副本</span></span><br><span class="line">  <span class="type">int</span> disk;    <span class="comment">// 表示缓冲区内容是否已交给磁盘</span></span><br><span class="line">  uint dev;</span><br><span class="line">  uint blockno;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">sleeplock</span> <span class="title">lock</span>;</span></span><br><span class="line">  uint refcnt;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">buf</span> *<span class="title">prev</span>;</span> <span class="comment">// LRU cache list</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">buf</span> *<span class="title">next</span>;</span></span><br><span class="line">  uchar data[BSIZE];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="日志层"><a href="#日志层" class="headerlink" title="日志层"></a>日志层</h2><p>参考文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/KatyuMarisaBlog/p/14385792.html">https://www.cnblogs.com/KatyuMarisaBlog/p/14385792.html</a> <br>Xv6通过简单的日志记录形式解决了文件系统操作期间的崩溃问题 <br>xv6系统调用不会直接写入磁盘上的文件系统数据结构。相反，它会在磁盘上的log（日志）中放置它希望进行的所有磁盘写入的描述</p>
+<h2 id="索引结点层"><a href="#索引结点层" class="headerlink" title="索引结点层"></a>索引结点层</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dinode</span> &#123;</span></span><br><span class="line">  <span class="type">short</span> type;           <span class="comment">// File type</span></span><br><span class="line">  <span class="type">short</span> major;          <span class="comment">// Major device number (T_DEVICE only)</span></span><br><span class="line">  <span class="type">short</span> minor;          <span class="comment">// Minor device number (T_DEVICE only)</span></span><br><span class="line">  <span class="type">short</span> nlink;          <span class="comment">// Number of links to inode in file system</span></span><br><span class="line">  uint size;            <span class="comment">// Size of file (bytes)</span></span><br><span class="line">  uint addrs[NDIRECT+<span class="number">1</span>];   <span class="comment">// Data block addresses</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>字段type区分文件、目录和特殊文件（设备）。type为零表示磁盘inode是空闲的</li>
+<li>字段nlink统计引用此inode的目录条目数，以便识别何时应释放磁盘上的inode及其数据块</li>
+<li>字段size记录文件中内容的字节数</li>
+<li>addrs数组记录保存文件内容的磁盘块的块号 \</li>
+</ol>
+<p>内核将活动的inode集合保存在内存中；struct inode（kernel&#x2F;file.h:17）是磁盘上struct dinode的内存副本 <br>只有当有C指针引用某个inode时，内核才会在内存中存储该inode。ref字段统计引用内存中inode的C指针的数量，如果引用计数降至零，内核将从内存中丢弃该inode</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">inode</span> &#123;</span></span><br><span class="line">  uint dev;           <span class="comment">// Device number</span></span><br><span class="line">  uint inum;          <span class="comment">// Inode number</span></span><br><span class="line">  <span class="type">int</span> ref;            <span class="comment">// Reference count</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">sleeplock</span> <span class="title">lock</span>;</span> <span class="comment">// protects everything below here</span></span><br><span class="line">  <span class="type">int</span> valid;          <span class="comment">// inode has been read from disk?</span></span><br><span class="line"></span><br><span class="line">  <span class="type">short</span> type;         <span class="comment">// copy of disk inode</span></span><br><span class="line">  <span class="type">short</span> major;</span><br><span class="line">  <span class="type">short</span> minor;</span><br><span class="line">  <span class="type">short</span> nlink;</span><br><span class="line">  uint size;</span><br><span class="line">  uint addrs[NDIRECT+<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MIT6.S081</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/04/xv6-FileSystem/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-CS144-lab2翻译" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -181,6 +325,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">CS144</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -243,6 +398,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">计算机网络（中科大）</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -385,6 +551,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MIT6.S081</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -571,6 +748,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Linux系统编程</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -838,6 +1026,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Linux系统编程</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -1112,6 +1311,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Linux系统编程</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -1206,6 +1416,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Algorithms, Part I</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -1290,99 +1511,22 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MIT6.S081</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2022/07/31/lec11-Thread-Switching/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-xv6-lock" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/31/xv6-lock/">xv6-lock</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/31/xv6-lock/" class="archive-article-date">
-  	<time datetime="2022-07-31T03:03:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><ul>
-<li>临界区域(critical section)<ul>
-<li>acquire和release之间的指令序列</li>
-</ul>
-</li>
-<li>不变量<ul>
-<li>跨操作维护的数据结构属性</li>
-<li>下列代码中list就是其中的不变量，l-&gt;next指向list（注：则此时list不再指向列表中的第一个元素，即违反了不变量），但是list还没有指向l，两个操作是跨操作的，为了维持其数据结构的属性（也就是list指向列表第一个元素），需要进行锁保护<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">element</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">element</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">element</span> *<span class="title">list</span> =</span> <span class="number">0</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">lock</span> <span class="title">listlock</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> </span><br><span class="line"><span class="title function_">push</span><span class="params">(<span class="type">int</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">element</span> *<span class="title">l</span>;</span></span><br><span class="line"></span><br><span class="line">    l = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span> *l);</span><br><span class="line">    l-&gt;data = data;</span><br><span class="line">    acquire(&amp;listlock);</span><br><span class="line">    l-&gt;next = <span class="built_in">list</span>;</span><br><span class="line">    <span class="built_in">list</span> = l; </span><br><span class="line">    release(&amp;listlock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>locked为零时表示锁可用 \</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">acquire</span><span class="params">(<span class="keyword">struct</span> spinlock* lk)</span> <span class="comment">// does not work!</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">for</span>(;;) &#123;</span><br><span class="line">    <span class="keyword">if</span>(lk-&gt;locked == <span class="number">0</span>) &#123;</span><br><span class="line">      lk-&gt;locked = <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>if(lk-locked &#x3D;&#x3D; 0)并不能保证互斥，因为可能有多个CPU同时到达这一语句，在RISC-V中提供了指令amoswap r, a来保证指令原子化，交换内存地址a中与寄存器r中的值</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">acquire</span><span class="params">(<span class="keyword">struct</span> spinlock* lk)</span> <span class="comment">// does not work!</span></span><br><span class="line">&#123;</span><br><span class="line">    ···</span><br><span class="line">    <span class="keyword">while</span>(__sync_lock_test_and_set(&amp;lk-&gt;locked, <span class="number">1</span>) != <span class="number">0</span>)</span><br><span class="line">        ;</span><br><span class="line">    ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>每次迭代将1与lk-&gt;locked进行swap操作，并检查lk-&gt;locked之前的值。如果之前为0，swap已经把lk-&gt;locked设置为1，那么我们就获得了锁；如果前一个值是1，那么另一个CPU持有锁，我们原子地将1与lk-&gt;locked进行swap的事实并没有改变它的值</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// spinlock.h</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> &#123;</span></span><br><span class="line">  uint locked;       <span class="comment">// Is the lock held?</span></span><br><span class="line">  <span class="comment">// For debugging:</span></span><br><span class="line">  <span class="type">char</span> *name;        <span class="comment">// Name of lock.</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> *<span class="title">cpu</span>;</span>   <span class="comment">// The cpu holding the lock.</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="锁使用条件"><a href="#锁使用条件" class="headerlink" title="锁使用条件"></a>锁使用条件</h3><ol>
-<li>任何时候可以被一个CPU写入，同时又可以被另一个CPU读写的变量</li>
-<li>如果一个不变量涉及多个内存位置，通常所有这些位置都需要由一个锁来保护，以确保不变量不被改变</li>
-</ol>
-<h3 id="死锁和锁排序"><a href="#死锁和锁排序" class="headerlink" title="死锁和锁排序"></a>死锁和锁排序</h3><p>为避免死锁，获取锁的顺序必须一致 <br>锁和中断处理函数也有可能出现死锁。<br>自旋锁和中断的交互引发了潜在的危险。假设sys_sleep持有tickslock，并且它的CPU被计时器中断中断。clockintr会尝试获取tickslock，意识到它被持有后等待释放。在这种情况下，tickslock永远不会被释放：只有sys_sleep可以释放它，但是sys_sleep直到clockintr返回前不能继续运行。所以CPU会死锁，任何需要锁的代码也会冻结 <br>如果一个自旋锁被中断处理程序所使用，那么CPU必须保证在启用中断的情况下永远不能持有该锁。<br>Xv6更保守：当CPU获取任何锁时，xv6总是禁用该CPU上的中断。\</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">acquire</span><span class="params">(<span class="keyword">struct</span> spinlock *lk)</span></span><br><span class="line">&#123;</span><br><span class="line">  ···</span><br><span class="line">  push_off(); <span class="comment">// disable interrupts to avoid deadlock.</span></span><br><span class="line">  ···</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">push_off</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> old = intr_get();</span><br><span class="line"></span><br><span class="line">  intr_off();</span><br><span class="line">  <span class="keyword">if</span>(mycpu()-&gt;noff == <span class="number">0</span>)</span><br><span class="line">    mycpu()-&gt;intena = old;</span><br><span class="line">  mycpu()-&gt;noff += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当CPU未持有自旋锁时，xv6重新启用中断；它必须做一些记录来处理嵌套的临界区域</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">pop_off</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">cpu</span> *<span class="title">c</span> =</span> mycpu();</span><br><span class="line">  <span class="keyword">if</span>(intr_get())</span><br><span class="line">    panic(<span class="string">&quot;pop_off - interruptible&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span>(c-&gt;noff &lt; <span class="number">1</span>)</span><br><span class="line">    panic(<span class="string">&quot;pop_off&quot;</span>);</span><br><span class="line">  c-&gt;noff -= <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span>(c-&gt;noff == <span class="number">0</span> &amp;&amp; c-&gt;intena)</span><br><span class="line">    intr_on();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>acquire之前调用push_off、release之后调用pop_off，否则会造成死锁</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">acquire</span><span class="params">(<span class="keyword">struct</span> spinlock *lk)</span></span><br><span class="line">&#123;</span><br><span class="line">  push_off(); <span class="comment">// disable interrupts to avoid deadlock.</span></span><br><span class="line">  <span class="keyword">if</span>(holding(lk))</span><br><span class="line">    panic(<span class="string">&quot;acquire&quot;</span>);</span><br><span class="line">  <span class="keyword">while</span>(__sync_lock_test_and_set(&amp;lk-&gt;locked, <span class="number">1</span>) != <span class="number">0</span>)</span><br><span class="line">    ;</span><br><span class="line">  __sync_synchronize();</span><br><span class="line">  lk-&gt;cpu = mycpu();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">release</span><span class="params">(<span class="keyword">struct</span> spinlock *lk)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(!holding(lk))</span><br><span class="line">    panic(<span class="string">&quot;release&quot;</span>);</span><br><span class="line">  lk-&gt;cpu = <span class="number">0</span>;</span><br><span class="line">  __sync_synchronize();</span><br><span class="line">  __sync_lock_release(&amp;lk-&gt;locked);</span><br><span class="line"></span><br><span class="line">  pop_off();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/31/xv6-lock/">展开全文 >></a>
         </p>
       
 
@@ -1510,6 +1654,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">CS144</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Algorithms, Part I</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Linux系统编程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络（中科大）</a>
               </li>
             
             <div class="clearfix"></div>
