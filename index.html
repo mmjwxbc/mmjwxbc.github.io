@@ -152,6 +152,79 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-1-bit数据的存储" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/">1-bit数据的存储</a>
+    </h1>
+  
+
+        
+        <a href="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/" class="archive-article-date">
+  	<time datetime="2022-08-05T03:14:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NJUOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-FAT和UNIX文件系统" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -180,6 +253,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NJUOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -1418,111 +1502,6 @@
 
 
   
-    <article id="post-ELEMENTARY-SORTS" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/31/ELEMENTARY-SORTS/">ELEMENTARY SORTS</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/31/ELEMENTARY-SORTS/" class="archive-article-date">
-  	<time datetime="2022-07-31T13:04:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Sorting-Introduction"><a href="#Sorting-Introduction" class="headerlink" title="Sorting Introduction"></a>Sorting Introduction</h2><p>后端用回调机制实现对客户端不同数据类型排序 <br>将函数作为实参传递给其他函数 <br>java通过对象实现Comparable接口调用compareTo方法实现sort方法不同数据类型排序</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Comparable</span>&lt;Item&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Item that)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>全序关系: 自然数、小数、时间、字母顺序 <br>剪刀石头布不具有全序关系<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.1.1.png"><br>Date类实现Comparable接口<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.1.2.png"></p>
-<h2 id="Selection-Sort"><a href="#Selection-Sort" class="headerlink" title="Selection Sort"></a>Selection Sort</h2><p>从第i项开始，从右边找到最小的元素交换，然后i向右移动直至末尾<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.2.1.png"></p>
-<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p><img src="/2022/07/31/ELEMENTARY-SORTS/2.2.2.png"></p>
-<h2 id="Insertion-Sort"><a href="#Insertion-Sort" class="headerlink" title="Insertion Sort"></a>Insertion Sort</h2><p>将第i个元素向左比较直至大于左边排好序列中的一个数，此时i及其左边的元素维持了不变性即升序或者降序<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.3.1.png"></p>
-<h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>黑色代表需要比较的、红色代表最终到达位置 <br>每次大概比较每一行中一半的元素所以标记次数 &#x3D; 1&#x2F;2 * 1&#x2F;2 * N^2 &#x3D; 1&#x2F;4N^2<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.3.2.png"><br>插入排序对于部分有序的数据的排序时间十分优秀，达到线性复杂度</p>
-<h2 id="Shellsort-希尔排序"><a href="#Shellsort-希尔排序" class="headerlink" title="Shellsort 希尔排序"></a>Shellsort 希尔排序</h2><p>通过h排序构造有序交叉子序列，以减少最后进行插入排序的时候的比较次数<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.4.1.png"></p>
-<h3 id="h排序的选择"><a href="#h排序的选择" class="headerlink" title="h排序的选择"></a>h排序的选择</h3><ol>
-<li>不能选用二次幂：不会交换奇偶位置的数据直至最后进行插入排序，效率很低<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Shell</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sort</span><span class="params">(Comparable[] a)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> a.length;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(h &lt; N/<span class="number">3</span>) &#123;</span><br><span class="line">            h = <span class="number">3</span>*h + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(h &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> h; i &lt; N; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &gt;= h &amp;&amp; less(a[j], a[j-h]); j -= h)</span><br><span class="line">                    exch(a, j, j - h);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            h = h/<span class="number">3</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">less</span><span class="params">(Comparable v, Comparable w)</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">exch</span><span class="params">(Comparable[] a, <span class="type">int</span> i, <span class="type">int</span> j)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/2022/07/31/ELEMENTARY-SORTS/2.4.2.png"></li>
-</ol>
-<h2 id="Shuffling-洗牌应用"><a href="#Shuffling-洗牌应用" class="headerlink" title="Shuffling 洗牌应用"></a>Shuffling 洗牌应用</h2><p>创建随机数并对随机数进行排序从而达到洗牌效果<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.5.1.png"><br>类似于插入排序的洗牌算法(利用随机性的线性时间洗牌算法)<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.5.2.png"></p>
-<h2 id="Convex-hull"><a href="#Convex-hull" class="headerlink" title="Convex hull"></a>Convex hull</h2><p>凸包是包含所有点的最小的凸状集合(最小的能圈起来所有点的凸多边形)<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.6.1.png"><br>葛立恒扫描法 </p>
-<ol>
-<li>将p点作为起始点(也就是y轴坐标值最小的点)</li>
-<li>将以p为起点的极角从小到大进行排序</li>
-<li>从p点开始逆时针方向寻找下一个点(注意只能逆时针方向)，下一个点寻找下下个点的过程也必须是逆时针方向，否则该点不是凸包上的点，需要回溯<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.6.2.png"><br>如何判断是顺时针或逆时针方向<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.6.3.png"><br><img src="/2022/07/31/ELEMENTARY-SORTS/2.6.4.png"></li>
-</ol>
-<h2 id="Mergesort"><a href="#Mergesort" class="headerlink" title="Mergesort"></a>Mergesort</h2><p>归并排序之父：冯诺依曼 <br>思想：分治法将问题一分为二，解决小问题</p>
-<ol>
-<li>将数组一分为二</li>
-</ol>
-<p>假设两个子数组是有序的，然后进行归并<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.1.png"><br>assert语句当执行函数时返回false将抛出异常<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.2.png"></p>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.3.png"></p>
-<h3 id="合并轨迹"><a href="#合并轨迹" class="headerlink" title="合并轨迹"></a>合并轨迹</h3><p><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.4.png"></p>
-<h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><p><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.5.png"></p>
-<h3 id="算法提升"><a href="#算法提升" class="headerlink" title="算法提升"></a>算法提升</h3><p><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.6.png"></p>
-<h3 id="Bottom-up-Mergesort"><a href="#Bottom-up-Mergesort" class="headerlink" title="Bottom-up Mergesort"></a>Bottom-up Mergesort</h3><p>从下往上的归并排序 <br>思路：先将数组分成每个一份，子序列进行排序，然后每两份合并，进行子序列排序，依次递进<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.7.png"><br>Math.min(lo + sz + sz - 1, N - 1) 因为最后子序列长度不一定够 <br>时间复杂度：每一轮需要N的时间共logN轮，故为O(NlogN)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MergeBU</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">merge</span><span class="params">(Comparable[] a, Comparable[] aux, <span class="type">int</span> lo, <span class="type">int</span> mid, <span class="type">int</span> hi)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> lo; k &lt;= hi; k++) &#123;</span><br><span class="line">            aux[k] = a[k];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> lo, j = mid + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> lo; k &lt;= hi; k++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i &gt; mid) &#123;</span><br><span class="line">                a[k] = aux[j++];</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j &gt; hi) &#123;</span><br><span class="line">                a[k] = aux[i++];</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (less(aux[j], aux[i])) &#123;</span><br><span class="line">                a[k] = aux[j++];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                a[k] = aux[i++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sort</span><span class="params">(Comparable[] a)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> a.length;</span><br><span class="line">        Comparable[] aux = <span class="keyword">new</span> <span class="title class_">Comparable</span>[N];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">sz</span> <span class="operator">=</span> <span class="number">1</span>;  sz &lt; N; sz += sz) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">lo</span> <span class="operator">=</span> <span class="number">0</span>; lo &lt; N - sz; lo += sz * <span class="number">2</span>) &#123;</span><br><span class="line">                merge(a, aux, lo, lo + sz - <span class="number">1</span>, Math.min(lo + sz + sz - <span class="number">1</span>, N - <span class="number">1</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            System.out.println(a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">less</span><span class="params">(Comparable v, Comparable w)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> v.compareTo(w) &lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        Comparable[] nums = &#123;<span class="number">7</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">231</span>, -<span class="number">1</span>, <span class="number">31</span>, <span class="number">8</span>, -<span class="number">100</span>&#125;;</span><br><span class="line">        sort(nums);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Comparator"><a href="#Comparator" class="headerlink" title="Comparator"></a>Comparator</h2><p>一种数据实现多种排序方式<br><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.8.png"><br><img src="/2022/07/31/ELEMENTARY-SORTS/2.7.9.png"></p>
-<h3 id="稳定排序"><a href="#稳定排序" class="headerlink" title="稳定排序"></a>稳定排序</h3><p>相同数据的相对顺序在排序后不变<br>稳定：归并排序、插入排序 <br>不稳定：选择排序、希尔排序 <br>判断是否稳定：移动数值的时候是否越过相同数值</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Algorithms, Part I</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/31/ELEMENTARY-SORTS/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1637,6 +1616,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机网络（中科大）</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">NJUOS</a>
               </li>
             
             <div class="clearfix"></div>

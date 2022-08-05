@@ -6,19 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Linux系统编程FileSystem | Hexo</title>
+  <title>Tag: NJUOS | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="项目地址: https:&#x2F;&#x2F;github.com&#x2F;mmjwxbc&#x2F;APUE&#x2F;tree&#x2F;master&#x2F;FileSystem \  创建-a文件 touch –(代表选项结束) -a touch .&#x2F;-a    目录和文件获取文件属性 stat()  通过文件路径获取属性 面对符号链接文件时获取的是所指向的目标文件的属性   fstat()  面对文件描述符获取属性   lstat()  面">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Linux系统编程FileSystem">
-<meta property="og:url" content="http://example.com/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/tags/NJUOS/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="项目地址: https:&#x2F;&#x2F;github.com&#x2F;mmjwxbc&#x2F;APUE&#x2F;tree&#x2F;master&#x2F;FileSystem \  创建-a文件 touch –(代表选项结束) -a touch .&#x2F;-a    目录和文件获取文件属性 stat()  通过文件路径获取属性 面对符号链接文件时获取的是所指向的目标文件的属性   fstat()  面对文件描述符获取属性   lstat()  面">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-08-01T12:35:48.000Z">
-<meta property="article:modified_time" content="2022-08-04T09:06:29.724Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="Linux系统编程">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -155,380 +150,98 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Linux系统编程FileSystem" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      Linux系统编程FileSystem
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2022" class="archive-year">2022</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/" class="archive-article-date">
+  	<time datetime="2022-08-05T03:14:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-05</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/">1-bit数据的存储</a>
     </h1>
   
 
-        
-        <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/" class="archive-article-date">
-  	<time datetime="2022-08-01T12:35:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>项目地址: <a target="_blank" rel="noopener" href="https://github.com/mmjwxbc/APUE/tree/master/FileSystem">https://github.com/mmjwxbc/APUE/tree/master/FileSystem</a> \</p>
-<ul>
-<li>创建-a文件<ul>
-<li>touch –(代表选项结束) -a</li>
-<li>touch .&#x2F;-a</li>
-</ul>
-</li>
-</ul>
-<h2 id="目录和文件"><a href="#目录和文件" class="headerlink" title="目录和文件"></a>目录和文件</h2><h3 id="获取文件属性"><a href="#获取文件属性" class="headerlink" title="获取文件属性"></a>获取文件属性</h3><ul>
-<li><p>stat()</p>
-<ul>
-<li>通过文件路径获取属性 面对符号链接文件时获取的是所指向的目标文件的属性</li>
-</ul>
-</li>
-<li><p>fstat()</p>
-<ul>
-<li>面对文件描述符获取属性</li>
-</ul>
-</li>
-<li><p>lstat()</p>
-<ul>
-<li>面对符号链接文件时获取的是符号链接文件的属性</li>
-</ul>
-</li>
-<li><p>空洞文件</p>
-</li>
-<li><p>st_mode</p>
-<ul>
-<li>文件类型<ul>
-<li>dcb-lsp<ul>
-<li>目录</li>
-<li>字符设备</li>
-<li>块设备</li>
-<li>常规文件</li>
-<li>符号链接文件</li>
-<li>socket文件</li>
-<li>管道文件</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>文件属性</li>
-</ul>
-</li>
-</ul>
-<h3 id="文件访问权限"><a href="#文件访问权限" class="headerlink" title="文件访问权限"></a>文件访问权限</h3><p>st_mode是16位的位图</p>
-<h3 id="umask"><a href="#umask" class="headerlink" title="umask"></a>umask</h3><p>防止产生权限过松的文件</p>
-<h3 id="文件权限的管理"><a href="#文件权限的管理" class="headerlink" title="文件权限的管理"></a>文件权限的管理</h3><p>chmod(const char *path, mode_t)<br>fchmod(int fd, mode_t mode)</p>
-<h3 id="粘住位"><a href="#粘住位" class="headerlink" title="粘住位"></a>粘住位</h3><p>t位</p>
-<ul>
-<li>如果在一个执行文件设置了该位，则执行该文件且进程结束后，系统会把该进程的正文部分放置磁盘的交换区中，在交换区中文件是连续存放的，不像非交换区一样，一个文件的内容分散在磁盘的几个块中。所以在加载该执行文件时就可以加快速度启动，直接从交换区中把进程的正文部分取至内存中运行</li>
-</ul>
-<h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>文件或数据的存储和管理</p>
-<ul>
-<li>FAT</li>
-<li>UFS</li>
-</ul>
-<h3 id="硬链接-符号链接"><a href="#硬链接-符号链接" class="headerlink" title="硬链接 符号链接"></a>硬链接 符号链接</h3><ul>
-<li>硬链接<ul>
-<li>与目录项是同义词</li>
-<li>不能建立分区或者目录硬链接</li>
-</ul>
-</li>
-<li>符号链接<ul>
-<li>可跨分区 可目录</li>
-<li>类似于Windows的快捷方式</li>
-<li>文件大小即为所指向文件名字符数组长度</li>
-<li>属性存储在inode不在磁盘块当中</li>
-</ul>
-</li>
-<li>rename()</li>
-<li>unlink()</li>
-<li>link()</li>
-<li>remove()</li>
-</ul>
-<h3 id="目录创建和销毁"><a href="#目录创建和销毁" class="headerlink" title="目录创建和销毁"></a>目录创建和销毁</h3><ul>
-<li>mkdir()</li>
-<li>rmdir()<ul>
-<li>仅删除空目录</li>
-<li>非空目录只能递归删除</li>
-</ul>
-</li>
-</ul>
-<h3 id="更改当前目录路径"><a href="#更改当前目录路径" class="headerlink" title="更改当前目录路径"></a>更改当前目录路径</h3><ul>
-<li>chdir()</li>
-<li>fchdir()</li>
-<li>getcwd()<ul>
-<li>获取当前工作路径</li>
-</ul>
-</li>
-</ul>
-<h3 id="分析目录、读取目录内容"><a href="#分析目录、读取目录内容" class="headerlink" title="分析目录、读取目录内容"></a>分析目录、读取目录内容</h3><ul>
-<li>glob()<ul>
-<li>解析模式串</li>
-</ul>
-</li>
-<li>opendir()</li>
-<li>closedir()</li>
-<li>readdir()</li>
-<li>rewinddir()</li>
-<li>seekdir()</li>
-<li>telldir()</li>
-</ul>
-<h2 id="系统数据文件和信息"><a href="#系统数据文件和信息" class="headerlink" title="系统数据文件和信息"></a>系统数据文件和信息</h2><ul>
-<li>&#x2F;etc&#x2F;passwd<ul>
-<li>getpwiud()</li>
-<li>getpwnam()</li>
-</ul>
-</li>
-<li>&#x2F;etc&#x2F;group<ul>
-<li>getgruid()</li>
-<li>getgrnam()</li>
-</ul>
-</li>
-<li>&#x2F;etc&#x2F;shadow<ul>
-<li>getspnam()</li>
-<li>crypt() 加密</li>
-<li>getpass() 关闭回显功能</li>
-</ul>
-</li>
-<li>时间戳<ul>
-<li>time()<ul>
-<li>返回以秒为单位的整数</li>
-</ul>
-</li>
-<li>gmtime()</li>
-<li>localtime()</li>
-<li>mktime()</li>
-<li>strftime()</li>
-</ul>
-</li>
-</ul>
-<h2 id="进程环境"><a href="#进程环境" class="headerlink" title="进程环境"></a>进程环境</h2><ul>
-<li><p>main()</p>
-</li>
-<li><p>进程的终止</p>
-<ul>
-<li>正常终止<ul>
-<li>从main()函数返回</li>
-<li>调用exit</li>
-<li>调用_exit()或_Exit<ul>
-<li>直接推退出，不执行钩子函数</li>
-</ul>
-</li>
-<li>最后一个线程从其启动例程返回</li>
-<li>最后一个线程调用pthread_exit()</li>
-</ul>
-</li>
-<li>异常终止<ul>
-<li>调用abort</li>
-<li>接到信号并终止</li>
-<li>最后一个线程对其取消请求作出响应</li>
-</ul>
-</li>
-<li>atexit()<ul>
-<li>钩子函数</li>
-<li>register a function to be called at normal process termination</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>命令行参数</p>
-<ul>
-<li>getopt()</li>
-</ul>
-</li>
-<li><p>环境变量</p>
-<ul>
-<li>KEY &#x3D; VALUE</li>
-<li>getenv()</li>
-<li>setenv()</li>
-<li>putenv()</li>
-</ul>
-</li>
-<li><p>C程序空间布局</p>
-<ul>
-<li>pmap()</li>
-</ul>
-</li>
-<li><p>库</p>
-<ul>
-<li>静态库</li>
-<li>动态库</li>
-<li>手工装载库(库打桩)<ul>
-<li>dlopen()</li>
-<li>dlclose()</li>
-<li>dlerror()</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>函数跳转</p>
-<ul>
-<li>跨函数跳转</li>
-<li>setjmp()</li>
-<li>longjmp()</li>
-</ul>
-</li>
-<li><p>资源的获取和控制</p>
-<ul>
-<li>getrlimit()</li>
-<li>setrlimit()</li>
-</ul>
-</li>
-</ul>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Linux系统编程</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NJUOS</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
   
-<nav id="article-nav">
-  
-    <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Linux系统编程ProcessBasic
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BIO/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Linux系统编程IO</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2022/08/05/FAT%E5%92%8CUNIX%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" class="archive-article-date">
+  	<time datetime="2022-08-05T03:06:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-05</time>
+</a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
+    	 
   
-  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2022/08/05/FAT%E5%92%8CUNIX%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">FAT和UNIX文件系统</a>
+    </h1>
   
 
+        <div class="article-info info-on-right">
+          
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NJUOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+          
+
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
   
 
-  
-
-  
+    
 
 
           </div>
@@ -551,9 +264,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
