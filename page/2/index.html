@@ -152,6 +152,291 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Linux系统编程IO" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BIO/">Linux系统编程IO</a>
+    </h1>
+  
+
+        
+        <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BIO/" class="archive-article-date">
+  	<time datetime="2022-08-01T12:35:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>学习视频: <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yJ411S7r6?spm_id_from=333.337.search-card.all.click&amp;vd_source=00c6b18ab60f51d86ffd157fe3e231eb">https://www.bilibili.com/video/BV1yJ411S7r6?spm_id_from=333.337.search-card.all.click&amp;vd_source=00c6b18ab60f51d86ffd157fe3e231eb</a> <br>项目地址: <a target="_blank" rel="noopener" href="https://github.com/mmjwxbc/APUE/tree/master/IO">https://github.com/mmjwxbc/APUE/tree/master/IO</a> <br>IO是实现一切的基础</p>
+<h2 id="stdio"><a href="#stdio" class="headerlink" title="stdio"></a>stdio</h2><ul>
+<li><p>error</p>
+<ul>
+<li>不再是全局变量，被私有化，错误映射到出错进程的内存空间当中</li>
+</ul>
+</li>
+<li><p>文件权限</p>
+<ul>
+<li>0666 &amp; ~umask(0002)</li>
+<li>0666    000 110 110 110</li>
+<li>umask   000 000 000 010</li>
+<li>~umask  111 111 111 101</li>
+</ul>
+</li>
+<li><p>FILE *fopen(const char *path, consr char *mode)</p>
+<ul>
+<li>FILE结构体存在位置<ul>
+<li>堆(T)</li>
+<li>栈(F)</li>
+<li>静态区(F)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>int fclose(FILE *fp)</p>
+</li>
+<li><p>字符相关</p>
+<ul>
+<li>int fgetc(FILE *stream)   函数形式<ul>
+<li>int getc(FILE *stream) define形式</li>
+</ul>
+</li>
+<li>int fputc(int c, FILE *stream)</li>
+</ul>
+</li>
+<li><p>字符串相关</p>
+<ul>
+<li>char *gets(char *s)<ul>
+<li>不检查缓冲区溢出</li>
+</ul>
+</li>
+<li>fgets(char *s, int size, FILE *stream)</li>
+<li>fputs(const char *s, FILE *stream)</li>
+</ul>
+</li>
+<li><p>fread()</p>
+</li>
+<li><p>fwrite()</p>
+</li>
+<li><p>printf()</p>
+<ul>
+<li>fprintf()<ul>
+<li>输出重定向</li>
+</ul>
+</li>
+<li>sprintf()<ul>
+<li>类似于itoa</li>
+</ul>
+</li>
+<li>snprintf()</li>
+</ul>
+</li>
+<li><p>scanf()</p>
+<ul>
+<li>fscanf()</li>
+<li>sscanf()</li>
+</ul>
+</li>
+<li><p>操作文件位置指针</p>
+<ul>
+<li>function<ul>
+<li>reposition a stream</li>
+</ul>
+</li>
+<li>fseek(FILE *stream, long offset, int whence)<ul>
+<li>定位</li>
+</ul>
+</li>
+<li>ftell()<ul>
+<li>当前文件指针位置</li>
+</ul>
+</li>
+<li>rewind()<ul>
+<li>重置当前位置指针为零</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>fflush()</p>
+<ul>
+<li>刷新缓冲区</li>
+<li>解决行缓冲</li>
+</ul>
+</li>
+<li><p>缓冲区</p>
+<ul>
+<li>合并系统调用</li>
+<li>分类<ul>
+<li>全缓冲：我们缓存在缓冲区的东西在缓冲区满的时候，才写入磁盘或者我们调用fflush刷新缓冲区才能写入到磁盘。对于全缓冲，如果我们缓冲区没满，或者我们没有手动刷新缓存，那么缓存区的内容是不能写入到磁盘的</li>
+<li>行缓冲：我们标准输入、标准输出都是采用的行缓存，也就是遇到换行符的时候，才会将缓存区的东西写入到磁盘</li>
+<li>无缓存：有的时候，我们希望一些内容在第一时间写入磁盘或者显示出来，比如我们显示错误信息的时候，这时候典型的例子比如标准出错，它就是直接显示出错信息，而不会先放入缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>getline()</p>
+<ul>
+<li>实现原理<ul>
+<li>函数封装<ul>
+<li>malloc  </li>
+<li>realloc</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>临时文件</p>
+<ul>
+<li>char tmpnam(char *s)</li>
+<li>FILE *-tmpfile(void)</li>
+<li>没有指向的时候，自动销毁</li>
+</ul>
+</li>
+</ul>
+<h2 id="sysio"><a href="#sysio" class="headerlink" title="sysio"></a>sysio</h2><ul>
+<li>文件描述符<ul>
+<li>实质是整型数<ul>
+<li>数组下标</li>
+<li>数组元素是指向某结构体的指针</li>
+</ul>
+</li>
+<li>磁盘上的文件由inode唯一标识</li>
+<li>优先使用当前可用范围最小的</li>
+<li>存在于进程空间<ul>
+<li>进程特有</li>
+</ul>
+</li>
+<li>一个fd对应一个结构体</li>
+</ul>
+</li>
+</ul>
+<h3 id="文件IO操作"><a href="#文件IO操作" class="headerlink" title="文件IO操作"></a>文件IO操作</h3><ul>
+<li>int open(const char *patname, int flags, [mode_t mode])<ul>
+<li>O_CREAT必须选择三参形式 因为要指定权限</li>
+<li>C语言没有重载 用的是变参</li>
+</ul>
+</li>
+<li>close(int fd)</li>
+<li>ssize_t read(int fd, void *buf, size_t count)</li>
+<li>ssize_t write(int fd, const void *buf, size_t count)</li>
+<li>off_t lseek(int fd, off_t offset, int whence)</li>
+</ul>
+<h3 id="sysio-和-stdio-的区别"><a href="#sysio-和-stdio-的区别" class="headerlink" title="sysio 和 stdio 的区别"></a>sysio 和 stdio 的区别</h3><ul>
+<li>sysio 响应快</li>
+<li>stdio 吞吐量大</li>
+<li>两者不能混用<ul>
+<li>存在缓冲区 导致文件位置指针不一致</li>
+</ul>
+</li>
+<li>转换<ul>
+<li>fdopen()</li>
+<li>fileno()</li>
+</ul>
+</li>
+<li>exp<ul>
+<li>ab.c</li>
+</ul>
+</li>
+</ul>
+<h3 id="IO效率问题"><a href="#IO效率问题" class="headerlink" title="IO效率问题"></a>IO效率问题</h3><p>BUFSIZE<br>  1024    real    0m30.332s<br>          user    0m1.556s<br>          sys     0m27.560s<br>  2048    real    0m8.909s<br>          user    0m0.761s<br>          sys     0m6.919s<br>  4096    real    0m5.039s<br>          user    0m0.373s<br>          sys     0m4.148s<br>  8192    real    0m3.757s<br>          user    0m0.186s<br>          sys     0m2.973s<br>  16384   real    0m3.437s<br>          user    0m0.112s<br>          sys     0m3.032s<br>  32768   real    0m3.120s<br>          user    0m0.073s<br>          sys     0m2.711s<br>  65536   real    0m2.768s<br>          user    0m0.038s<br>          sys     0m2.358s<br>  131072  real    0m2.279s<br>          user    0m0.021s<br>          sys     0m1.889s<br>  262144  real    0m2.276s<br>          user    0m0.013s<br>          sys     0m1.886s<br>  524288  real    0m2.560s<br>          user    0m0.004s<br>          sys     0m2.185s</p>
+<h3 id="文件共享"><a href="#文件共享" class="headerlink" title="文件共享"></a>文件共享</h3><ul>
+<li>多个任务共同操作一个文件或者协同完成任务</li>
+</ul>
+<h3 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h3><ul>
+<li>不可分割的操作</li>
+<li>作用<ul>
+<li>解决竞争和操作</li>
+</ul>
+</li>
+</ul>
+<h3 id="程序中的重定向"><a href="#程序中的重定向" class="headerlink" title="程序中的重定向"></a>程序中的重定向</h3><p>复制文件描述符</p>
+<ul>
+<li>dup()</li>
+<li>dup2()</li>
+</ul>
+<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><ul>
+<li><p>sync()</p>
+</li>
+<li><p>fsync()</p>
+</li>
+<li><p>fdatasync()</p>
+</li>
+<li><p>管家级别的函数</p>
+<ul>
+<li>fcntl()<ul>
+<li>文件相关的内容</li>
+</ul>
+</li>
+<li>ioctl()<ul>
+<li>设备相关的内容</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>&#x2F;dev&#x2F;fd</p>
+<ul>
+<li>虚目录 显示当前进程的文件描述符信息</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Linux系统编程</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BIO/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ELEMENTARY-SORTS" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -884,15 +1169,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">NJUOS</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">CS144</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
               </li>
              
               <li class="article-tag-list-item">
