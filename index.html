@@ -172,7 +172,27 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="磁芯存储器"><a href="#磁芯存储器" class="headerlink" title="磁芯存储器"></a>磁芯存储器</h2><p>参考资料：<a target="_blank" rel="noopener" href="https://corememoryshield.com/index.html">https://corememoryshield.com/index.html</a><br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/1.jpg"></p>
+<h2 id="codedump"><a href="#codedump" class="headerlink" title="codedump"></a>codedump</h2><p>核心转储是进程意外终止时包含进程地址空间（内存）的文件。核心转储可以按需生成（例如通过调试器），或者在终止时自动生成 <br>参考资料：<a target="_blank" rel="noopener" href="https://blog.csdn.net/Xiao_brother/article/details/125546025">https://blog.csdn.net/Xiao_brother/article/details/125546025</a></p>
+<h3 id="ubuntu查看coredump文件"><a href="#ubuntu查看coredump文件" class="headerlink" title="ubuntu查看coredump文件"></a>ubuntu查看coredump文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ulimit</span> -c unlimited</span><br><span class="line"><span class="comment"># root用户下</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;core&quot;</span> &gt; /proc/sys/kernel/core_pattern</span><br><span class="line"><span class="comment"># 设置enable为0</span></span><br><span class="line">vim /etc/default/apport</span><br><span class="line">wget http://jyywiki.cn/pages/OS/2022/demos/segfault.c</span><br><span class="line">gcc -g segfalut.c </span><br><span class="line">./a.out</span><br><span class="line"><span class="comment"># 调试core文件</span></span><br><span class="line">gdb ./a.out core</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/2.png"></p>
+<h2 id="存储介质：磁"><a href="#存储介质：磁" class="headerlink" title="存储介质：磁"></a>存储介质：磁</h2><p>读取：放大感应电流 <br>写入：电磁铁磁化磁针</p>
+<h3 id="磁带-Magnetic-Tape-1928"><a href="#磁带-Magnetic-Tape-1928" class="headerlink" title="磁带 (Magnetic Tape, 1928)"></a>磁带 (Magnetic Tape, 1928)</h3><p><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/3.jpg"><br>价格：非常低 - 都是廉价的材料 <br>容量：非常高 <br>读写速度：顺序读取：勉强 - 需要等待定位 <br>随机读取：几乎完全不行 <br>可靠性：存在机械部件、需要保存的环境苛刻 <br>今天的应用场景：冷数据的存档和备份</p>
+<h3 id="磁鼓-Magnetic-Drum-1932"><a href="#磁鼓-Magnetic-Drum-1932" class="headerlink" title="磁鼓 (Magnetic Drum, 1932)"></a>磁鼓 (Magnetic Drum, 1932)</h3><p>1D → 1.5D (1D x n)<br>用旋转的二维平面存储数据 <br>无法内卷，容量变小 <br>读写延迟不会超过旋转周期 <br>随机读写速度大幅提升<br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/4.png"><br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/5.jpg"></p>
+<h3 id="磁盘-Hard-Disk-1956"><a href="#磁盘-Hard-Disk-1956" class="headerlink" title="磁盘 (Hard Disk, 1956)"></a>磁盘 (Hard Disk, 1956)</h3><p><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/6.jpg"><br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/7.jpg"><br>价格：低 - 密度越高，成本越低 <br>容量：高 (2.5D) - 平面上可以有数万个磁道 <br>读写速度</p>
+<ul>
+<li>顺序读取：较高</li>
+<li>随机读取：勉强 \</li>
+</ul>
+<p>可靠性：存在机械部件，磁头划伤盘片导致数据损坏 \</p>
+<p>现在的磁盘自带CPU和DRAM(SOC)，将磁盘抽象成一个个块</p>
+<h3 id="软盘-Floppy-Disk-1971"><a href="#软盘-Floppy-Disk-1971" class="headerlink" title="软盘 (Floppy Disk, 1971)"></a>软盘 (Floppy Disk, 1971)</h3><p>把读写头和盘片分开——实现数据移动 <br>计算机上的软盘驱动器 (drive) + 可移动的盘片<br>8” (1971), 5.25” (1975), 3.5” (1981)<br>最初的软盘成本很低，就是个纸壳子<br>3.5 英寸软盘为了提高可靠性，已经是 “硬” 的了<br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/8.jpg"><br>价格：低 - 塑料、盘片和一些小材料 <br>容量：低 (暴露的存储介质，密度受限) <br>读写速度：顺序&#x2F;随机读取：低 <br>可靠性：低 (暴露的存储介质)</p>
+<h2 id="存储介质：坑"><a href="#存储介质：坑" class="headerlink" title="存储介质：坑"></a>存储介质：坑</h2><h3 id="Compact-Disk-CD-1980"><a href="#Compact-Disk-CD-1980" class="headerlink" title="Compact Disk (CD, 1980)"></a>Compact Disk (CD, 1980)</h3><p>利用反射光线强弱区分0和1；汉明码纠错<br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/9.png"><br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/10.jpg"><br>价格：很低 (而且很容易通过 “压盘” 复制) <br>容量：高 <br>读写速度：顺序读取速度高；随机读取勉强；写入速度低 (挖坑容易填坑难)  <br>可靠性：高</p>
+<h2 id="存储介质：电"><a href="#存储介质：电" class="headerlink" title="存储介质：电"></a>存储介质：电</h2><p>缺陷：<br>磁：机械部件导致 ms 级延迟 <br>坑 (光): 一旦挖坑，填坑很困难 (CD 是只读的)</p>
+<h3 id="Solid-State-Drive-1991"><a href="#Solid-State-Drive-1991" class="headerlink" title="Solid State Drive (1991)"></a>Solid State Drive (1991)</h3><p>自带CPU、RAM、buffer、操作系统<br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/11.jpg"><br>价格：低 (大规模集成电路，便宜) <br>容量：高 (3D 空间里每个  都是一个 bit) <br>读写速度：高 (直接通过电路读写) <br>不讲道理的特性：容量越大，速度越快 (电路级并行) <br>快到淘汰了旧的 SATA 接口标准 (NVMe) <br>可靠性：高 (没有机械部件，随便摔)</p>
+<h3 id="USB-Flash-Disk-1999"><a href="#USB-Flash-Disk-1999" class="headerlink" title="USB Flash Disk (1999)"></a>USB Flash Disk (1999)</h3><p>盘容量大、速度快、相当便宜;很快就取代了软盘，成为了人手的存储介质;Compact Flash (CF, 1994)<br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/12.jpg"><br>放电 (erase) 做不到 100% 放干净 <br>放电数千&#x2F;数万次以后，就好像是 “充电” 状态了 <br>dead cell; “wear out” <br>必须解决这个问题 SSD 才能实用</p>
+<h3 id="NAND-Wear-Out-的解决：软件定义磁盘"><a href="#NAND-Wear-Out-的解决：软件定义磁盘" class="headerlink" title="NAND Wear-Out 的解决：软件定义磁盘"></a>NAND Wear-Out 的解决：软件定义磁盘</h3><p>每一个 SSD 里都藏了一个完整的计算机系统：<br><img src="/2022/08/05/1-bit%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8/13.jpg"><br>假设某一块已经被写了100次，SSD里面的操作系统不想再被写一次，会克隆该块到另一个块，修改其映射关系</p>
+
       
 
       
@@ -1603,6 +1623,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">NJUOS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">CS144</a>
               </li>
              
@@ -1616,10 +1640,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机网络（中科大）</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">NJUOS</a>
               </li>
             
             <div class="clearfix"></div>
