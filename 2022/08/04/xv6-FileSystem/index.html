@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://example.com/2022/08/04/xv6-FileSystem/1.png">
 <meta property="og:image" content="http://example.com/2022/08/04/xv6-FileSystem/2.png">
 <meta property="article:published_time" content="2022-08-04T02:50:18.000Z">
-<meta property="article:modified_time" content="2022-08-05T10:53:03.011Z">
+<meta property="article:modified_time" content="2022-08-08T13:54:37.927Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="MIT6.S081">
 <meta name="twitter:card" content="summary">
@@ -259,7 +259,8 @@
 <li>如果inode的ref大于零，则会导致系统在cache中维护inode，而不会对其他inode重用此缓存项。</li>
 <li>每个inode都包含一个nlink字段（在磁盘上，如果已缓存则复制到内存中），该字段统计引用文件的目录项的数量；如果inode的链接计数大于零，xv6将不会释放inode。</li>
 </ol>
-
+<h3 id="分配inode过程"><a href="#分配inode过程" class="headerlink" title="分配inode过程"></a>分配inode过程</h3><p>在user下创建测试文件test.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/types.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kernel/fcntl.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;user/user.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    open(<span class="string">&quot;/test/test.txt&quot;</span>, O_RDWR | O_CREATE);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
 
       
@@ -504,11 +505,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">CS144</a>
+                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
+                <a href="javascript:void(0)" class="js-tag color1">CS144</a>
               </li>
              
               <li class="article-tag-list-item">
