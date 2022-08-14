@@ -152,6 +152,122 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-xv6-内存管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/14/xv6-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">xv6:内存管理</a>
+    </h1>
+  
+
+        
+        <a href="/2022/08/14/xv6-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="archive-article-date">
+  	<time datetime="2022-08-14T07:18:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="物理内存管理"><a href="#物理内存管理" class="headerlink" title="物理内存管理"></a>物理内存管理</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p><img src="/2022/08/14/xv6-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/1.png"></p>
+<ol>
+<li>初始化物理页帧空闲链表（头插法）</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">run</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> <span class="title">lock</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">freelist</span>;</span></span><br><span class="line">&#125; kmem;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">kinit</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  initlock(&amp;kmem.lock, <span class="string">&quot;kmem&quot;</span>);</span><br><span class="line">  freerange(end, (<span class="type">void</span>*)PHYSTOP);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">freerange</span><span class="params">(<span class="type">void</span> *pa_start, <span class="type">void</span> *pa_end)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> *p;</span><br><span class="line">  p = (<span class="type">char</span>*)PGROUNDUP((uint64)pa_start);</span><br><span class="line">  <span class="keyword">for</span>(; p + PGSIZE &lt;= (<span class="type">char</span>*)pa_end; p += PGSIZE)</span><br><span class="line">    kfree(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">kfree</span><span class="params">(<span class="type">void</span> *pa)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(((uint64)pa % PGSIZE) != <span class="number">0</span> || (<span class="type">char</span>*)pa &lt; end || (uint64)pa &gt;= PHYSTOP)</span><br><span class="line">    panic(<span class="string">&quot;kfree&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Fill with junk to catch dangling refs.</span></span><br><span class="line">  <span class="built_in">memset</span>(pa, <span class="number">1</span>, PGSIZE);</span><br><span class="line"></span><br><span class="line">  r = (<span class="keyword">struct</span> run*)pa;</span><br><span class="line"></span><br><span class="line">  acquire(&amp;kmem.lock);</span><br><span class="line">  r-&gt;next = kmem.freelist;</span><br><span class="line">  kmem.freelist = r;</span><br><span class="line">  release(&amp;kmem.lock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="运行时"><a href="#运行时" class="headerlink" title="运行时"></a>运行时</h3><ol>
+<li>*kfree()<em>和</em>kalloc()*进行物理页帧分配和回收<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *</span><br><span class="line"><span class="title function_">kalloc</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line"></span><br><span class="line">  acquire(&amp;kmem.lock);</span><br><span class="line">  r = kmem.freelist;</span><br><span class="line">  <span class="keyword">if</span>(r)</span><br><span class="line">    kmem.freelist = r-&gt;next;</span><br><span class="line">  release(&amp;kmem.lock);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(r)</span><br><span class="line">    <span class="built_in">memset</span>((<span class="type">char</span>*)r, <span class="number">5</span>, PGSIZE); <span class="comment">// fill with junk</span></span><br><span class="line">  <span class="keyword">return</span> (<span class="type">void</span>*)r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="虚存管理"><a href="#虚存管理" class="headerlink" title="虚存管理"></a>虚存管理</h2><h3 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h3><h4 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h4><ol>
+<li>内核页表采取直接映射的方式（虚拟地址等于物理地址）</li>
+<li>蹦床页面和内核栈页面没有采取直接映射，而是映射到偏高的地址</li>
+<li>每个内核栈下面都有一个guard page(设置PTE_V为0)以检测栈溢出<br><img src="/2022/08/14/xv6-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/2.png"><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">pagetable_t</span></span><br><span class="line"><span class="title function_">kvmmake</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">pagetable_t</span> kpgtbl;</span><br><span class="line"></span><br><span class="line">  kpgtbl = (<span class="type">pagetable_t</span>) kalloc();</span><br><span class="line">  <span class="built_in">memset</span>(kpgtbl, <span class="number">0</span>, PGSIZE);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// uart registers</span></span><br><span class="line">  kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// virtio mmio disk interface</span></span><br><span class="line">  kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// PLIC</span></span><br><span class="line">  kvmmap(kpgtbl, PLIC, PLIC, <span class="number">0x400000</span>, PTE_R | PTE_W);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// map kernel text executable and read-only.</span></span><br><span class="line">  kvmmap(kpgtbl, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// map kernel data and the physical RAM we&#x27;ll make use of.</span></span><br><span class="line">  kvmmap(kpgtbl, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// map the trampoline for trap entry/exit to</span></span><br><span class="line">  <span class="comment">// the highest virtual address in the kernel.</span></span><br><span class="line">  kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// map kernel stacks</span></span><br><span class="line">  proc_mapstacks(kpgtbl);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> kpgtbl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Initialize the one kernel_pagetable</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">kvminit</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  kernel_pagetable = kvmmake();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="页表项PTE查找"><a href="#页表项PTE查找" class="headerlink" title="页表项PTE查找"></a>页表项PTE查找</h4><p><img src="/2022/08/14/xv6-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/3.png"><br>xv6使用了三级页表</p>
+<p>页表项(PTE: Page Table Entries) </p>
+<p>物理页码(PPN: Physical Page Number)</p>
+<p>walk()</p>
+<ol>
+<li>循环遍历虚拟地址，匹配与之相对应的pte</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Return the address of the PTE in page table pagetable</span></span><br><span class="line"><span class="comment">// that corresponds to virtual address va.  If alloc!=0,</span></span><br><span class="line"><span class="comment">// create any required page-table pages.</span></span><br><span class="line"><span class="type">pte_t</span> *</span><br><span class="line"><span class="title function_">walk</span><span class="params">(<span class="type">pagetable_t</span> pagetable, uint64 va, <span class="type">int</span> alloc)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(va &gt;= MAXVA)</span><br><span class="line">    panic(<span class="string">&quot;walk&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> level = <span class="number">2</span>; level &gt; <span class="number">0</span>; level--) &#123;</span><br><span class="line">    <span class="type">pte_t</span> *pte = &amp;pagetable[PX(level, va)];</span><br><span class="line">    <span class="keyword">if</span>(*pte &amp; PTE_V) &#123;</span><br><span class="line">      pagetable = (<span class="type">pagetable_t</span>)PTE2PA(*pte);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span>(!alloc || (pagetable = (<span class="type">pde_t</span>*)kalloc()) == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      <span class="built_in">memset</span>(pagetable, <span class="number">0</span>, PGSIZE);</span><br><span class="line">      *pte = PA2PTE(pagetable) | PTE_V;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &amp;pagetable[PX(<span class="number">0</span>, va)];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Look up a virtual address, return the physical address,</span></span><br><span class="line"><span class="comment">// or 0 if not mapped.</span></span><br><span class="line"><span class="comment">// Can only be used to look up user pages.</span></span><br><span class="line">uint64</span><br><span class="line"><span class="title function_">walkaddr</span><span class="params">(<span class="type">pagetable_t</span> pagetable, uint64 va)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">pte_t</span> *pte;</span><br><span class="line">  uint64 pa;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(va &gt;= MAXVA)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  pte = walk(pagetable, va, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span>(pte == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span>((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span>((*pte &amp; PTE_U) == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  pa = PTE2PA(*pte);</span><br><span class="line">  <span class="keyword">return</span> pa;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="页表映射"><a href="#页表映射" class="headerlink" title="页表映射"></a>页表映射</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">mappages</span><span class="params">(<span class="type">pagetable_t</span> pagetable, uint64 va, uint64 size, uint64 pa, <span class="type">int</span> perm)</span></span><br><span class="line">&#123;</span><br><span class="line">  uint64 a, last;</span><br><span class="line">  <span class="type">pte_t</span> *pte;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(size == <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;mappages: size&quot;</span>);</span><br><span class="line">  </span><br><span class="line">  a = PGROUNDDOWN(va); <span class="comment">// 虚拟地址向下对齐</span></span><br><span class="line">  last = PGROUNDDOWN(va + size - <span class="number">1</span>); <span class="comment">// 虚拟地址向上对齐</span></span><br><span class="line">  <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">    <span class="keyword">if</span>((pte = walk(pagetable, a, <span class="number">1</span>)) == <span class="number">0</span>) <span class="comment">// 匹配0级页表</span></span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span>(*pte &amp; PTE_V)</span><br><span class="line">      panic(<span class="string">&quot;mappages: remap&quot;</span>);</span><br><span class="line">    *pte = PA2PTE(pa) | perm | PTE_V; <span class="comment">// 设置页表项属性</span></span><br><span class="line">    <span class="keyword">if</span>(a == last)</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    a += PGSIZE;</span><br><span class="line">    pa += PGSIZE;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="页表取消映射"><a href="#页表取消映射" class="headerlink" title="页表取消映射"></a>页表取消映射</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">uvmunmap</span><span class="params">(<span class="type">pagetable_t</span> pagetable, uint64 va, uint64 npages, <span class="type">int</span> do_free)</span></span><br><span class="line">&#123;</span><br><span class="line">  uint64 a;</span><br><span class="line">  <span class="type">pte_t</span> *pte;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>((va % PGSIZE) != <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;uvmunmap: not aligned&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(a = va; a &lt; va + npages*PGSIZE; a += PGSIZE)&#123;</span><br><span class="line">    <span class="keyword">if</span>((pte = walk(pagetable, a, <span class="number">0</span>)) == <span class="number">0</span>) <span class="comment">// 匹配0级页表找到对应页表项</span></span><br><span class="line">      panic(<span class="string">&quot;uvmunmap: walk&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;uvmunmap: not mapped&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(PTE_FLAGS(*pte) == PTE_V)</span><br><span class="line">      panic(<span class="string">&quot;uvmunmap: not a leaf&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(do_free)&#123;</span><br><span class="line">      uint64 pa = PTE2PA(*pte);</span><br><span class="line">      kfree((<span class="type">void</span>*)pa); <span class="comment">// 释放物理页帧</span></span><br><span class="line">    &#125;</span><br><span class="line">    *pte = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h3><h4 id="初始化-2"><a href="#初始化-2" class="headerlink" title="初始化"></a>初始化</h4><ol>
+<li>创建新进程的时候调用 <em>uvmcreate()</em></li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create an empty user page table.</span></span><br><span class="line"><span class="comment">// returns 0 if out of memory.</span></span><br><span class="line"><span class="type">pagetable_t</span></span><br><span class="line"><span class="title function_">uvmcreate</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">pagetable_t</span> pagetable;</span><br><span class="line">  pagetable = (<span class="type">pagetable_t</span>) kalloc(); <span class="comment">// 只创建二级页表</span></span><br><span class="line">  <span class="keyword">if</span>(pagetable == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">memset</span>(pagetable, <span class="number">0</span>, PGSIZE);</span><br><span class="line">  <span class="keyword">return</span> pagetable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="运行时-1"><a href="#运行时-1" class="headerlink" title="运行时"></a>运行时</h4><ol>
+<li>增长用户空间内存大小</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Allocate PTEs and physical memory to grow process from oldsz to</span></span><br><span class="line"><span class="comment">// newsz, which need not be page aligned.  Returns new size or 0 on error.</span></span><br><span class="line">uint64</span><br><span class="line"><span class="title function_">uvmalloc</span><span class="params">(<span class="type">pagetable_t</span> pagetable, uint64 oldsz, uint64 newsz)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> *mem;</span><br><span class="line">  uint64 a;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(newsz &lt; oldsz)</span><br><span class="line">    <span class="keyword">return</span> oldsz;</span><br><span class="line"></span><br><span class="line">  oldsz = PGROUNDUP(oldsz);</span><br><span class="line">  <span class="keyword">for</span>(a = oldsz; a &lt; newsz; a += PGSIZE)&#123;</span><br><span class="line">    mem = kalloc(); <span class="comment">// 分配物理页帧</span></span><br><span class="line">    <span class="keyword">if</span>(mem == <span class="number">0</span>)&#123;</span><br><span class="line">      uvmdealloc(pagetable, a, oldsz);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">memset</span>(mem, <span class="number">0</span>, PGSIZE);</span><br><span class="line">    <span class="comment">// 执行虚拟地址映射</span></span><br><span class="line">    <span class="keyword">if</span>(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_W|PTE_X|PTE_R|PTE_U) != <span class="number">0</span>)&#123;</span><br><span class="line">      kfree(mem);</span><br><span class="line">      uvmdealloc(pagetable, a, oldsz);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newsz;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="减少用户空间大小"><a href="#减少用户空间大小" class="headerlink" title="减少用户空间大小"></a>减少用户空间大小</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">uint64</span><br><span class="line"><span class="title function_">uvmdealloc</span><span class="params">(<span class="type">pagetable_t</span> pagetable, uint64 oldsz, uint64 newsz)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(newsz &gt;= oldsz)</span><br><span class="line">    <span class="keyword">return</span> oldsz;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(PGROUNDUP(newsz) &lt; PGROUNDUP(oldsz))&#123;</span><br><span class="line">    <span class="comment">// 计算需要释放的物理页帧数</span></span><br><span class="line">    <span class="type">int</span> npages = (PGROUNDUP(oldsz) - PGROUNDUP(newsz)) / PGSIZE;</span><br><span class="line">    <span class="comment">// 取消映射并且释放对应物理页帧</span></span><br><span class="line">    uvmunmap(pagetable, PGROUNDUP(newsz), npages, <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> newsz;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="取消用户页表所有映射"><a href="#取消用户页表所有映射" class="headerlink" title="取消用户页表所有映射"></a>取消用户页表所有映射</h4><ol>
+<li>递归处理每一个页表项将其至为0</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">freewalk</span><span class="params">(<span class="type">pagetable_t</span> pagetable)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// there are 2^9 = 512 PTEs in a page table.</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">512</span>; i++)&#123;</span><br><span class="line">    <span class="type">pte_t</span> pte = pagetable[i];</span><br><span class="line">    <span class="keyword">if</span>((pte &amp; PTE_V) &amp;&amp; (pte &amp; (PTE_R|PTE_W|PTE_X)) == <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="comment">// this PTE points to a lower-level page table.</span></span><br><span class="line">      uint64 child = PTE2PA(pte);</span><br><span class="line">      freewalk((<span class="type">pagetable_t</span>)child);</span><br><span class="line">      pagetable[i] = <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(pte &amp; PTE_V)&#123;</span><br><span class="line">      panic(<span class="string">&quot;freewalk: leaf&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  kfree((<span class="type">void</span>*)pagetable);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MIT6.S081</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/14/xv6-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-CS144-lab3翻译" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1176,284 +1292,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Linux系统编程FileSystem" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/">Linux系统编程FileSystem</a>
-    </h1>
-  
-
-        
-        <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/" class="archive-article-date">
-  	<time datetime="2022-08-01T12:35:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>项目地址: <a target="_blank" rel="noopener" href="https://github.com/mmjwxbc/APUE/tree/master/FileSystem">https://github.com/mmjwxbc/APUE/tree/master/FileSystem</a> \</p>
-<ul>
-<li>创建-a文件<ul>
-<li>touch –(代表选项结束) -a</li>
-<li>touch .&#x2F;-a</li>
-</ul>
-</li>
-</ul>
-<h2 id="目录和文件"><a href="#目录和文件" class="headerlink" title="目录和文件"></a>目录和文件</h2><h3 id="获取文件属性"><a href="#获取文件属性" class="headerlink" title="获取文件属性"></a>获取文件属性</h3><ul>
-<li><p>stat()</p>
-<ul>
-<li>通过文件路径获取属性 面对符号链接文件时获取的是所指向的目标文件的属性</li>
-</ul>
-</li>
-<li><p>fstat()</p>
-<ul>
-<li>面对文件描述符获取属性</li>
-</ul>
-</li>
-<li><p>lstat()</p>
-<ul>
-<li>面对符号链接文件时获取的是符号链接文件的属性</li>
-</ul>
-</li>
-<li><p>空洞文件</p>
-</li>
-<li><p>st_mode</p>
-<ul>
-<li>文件类型<ul>
-<li>dcb-lsp<ul>
-<li>目录</li>
-<li>字符设备</li>
-<li>块设备</li>
-<li>常规文件</li>
-<li>符号链接文件</li>
-<li>socket文件</li>
-<li>管道文件</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>文件属性</li>
-</ul>
-</li>
-</ul>
-<h3 id="文件访问权限"><a href="#文件访问权限" class="headerlink" title="文件访问权限"></a>文件访问权限</h3><p>st_mode是16位的位图</p>
-<h3 id="umask"><a href="#umask" class="headerlink" title="umask"></a>umask</h3><p>防止产生权限过松的文件</p>
-<h3 id="文件权限的管理"><a href="#文件权限的管理" class="headerlink" title="文件权限的管理"></a>文件权限的管理</h3><p>chmod(const char *path, mode_t)<br>fchmod(int fd, mode_t mode)</p>
-<h3 id="粘住位"><a href="#粘住位" class="headerlink" title="粘住位"></a>粘住位</h3><p>t位</p>
-<ul>
-<li>如果在一个执行文件设置了该位，则执行该文件且进程结束后，系统会把该进程的正文部分放置磁盘的交换区中，在交换区中文件是连续存放的，不像非交换区一样，一个文件的内容分散在磁盘的几个块中。所以在加载该执行文件时就可以加快速度启动，直接从交换区中把进程的正文部分取至内存中运行</li>
-</ul>
-<h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>文件或数据的存储和管理</p>
-<ul>
-<li>FAT</li>
-<li>UFS</li>
-</ul>
-<h3 id="硬链接-符号链接"><a href="#硬链接-符号链接" class="headerlink" title="硬链接 符号链接"></a>硬链接 符号链接</h3><ul>
-<li>硬链接<ul>
-<li>与目录项是同义词</li>
-<li>不能建立分区或者目录硬链接</li>
-</ul>
-</li>
-<li>符号链接<ul>
-<li>可跨分区 可目录</li>
-<li>类似于Windows的快捷方式</li>
-<li>文件大小即为所指向文件名字符数组长度</li>
-<li>属性存储在inode不在磁盘块当中</li>
-</ul>
-</li>
-<li>rename()</li>
-<li>unlink()</li>
-<li>link()</li>
-<li>remove()</li>
-</ul>
-<h3 id="目录创建和销毁"><a href="#目录创建和销毁" class="headerlink" title="目录创建和销毁"></a>目录创建和销毁</h3><ul>
-<li>mkdir()</li>
-<li>rmdir()<ul>
-<li>仅删除空目录</li>
-<li>非空目录只能递归删除</li>
-</ul>
-</li>
-</ul>
-<h3 id="更改当前目录路径"><a href="#更改当前目录路径" class="headerlink" title="更改当前目录路径"></a>更改当前目录路径</h3><ul>
-<li>chdir()</li>
-<li>fchdir()</li>
-<li>getcwd()<ul>
-<li>获取当前工作路径</li>
-</ul>
-</li>
-</ul>
-<h3 id="分析目录、读取目录内容"><a href="#分析目录、读取目录内容" class="headerlink" title="分析目录、读取目录内容"></a>分析目录、读取目录内容</h3><ul>
-<li>glob()<ul>
-<li>解析模式串</li>
-</ul>
-</li>
-<li>opendir()</li>
-<li>closedir()</li>
-<li>readdir()</li>
-<li>rewinddir()</li>
-<li>seekdir()</li>
-<li>telldir()</li>
-</ul>
-<h2 id="系统数据文件和信息"><a href="#系统数据文件和信息" class="headerlink" title="系统数据文件和信息"></a>系统数据文件和信息</h2><ul>
-<li>&#x2F;etc&#x2F;passwd<ul>
-<li>getpwiud()</li>
-<li>getpwnam()</li>
-</ul>
-</li>
-<li>&#x2F;etc&#x2F;group<ul>
-<li>getgruid()</li>
-<li>getgrnam()</li>
-</ul>
-</li>
-<li>&#x2F;etc&#x2F;shadow<ul>
-<li>getspnam()</li>
-<li>crypt() 加密</li>
-<li>getpass() 关闭回显功能</li>
-</ul>
-</li>
-<li>时间戳<ul>
-<li>time()<ul>
-<li>返回以秒为单位的整数</li>
-</ul>
-</li>
-<li>gmtime()</li>
-<li>localtime()</li>
-<li>mktime()</li>
-<li>strftime()</li>
-</ul>
-</li>
-</ul>
-<h2 id="进程环境"><a href="#进程环境" class="headerlink" title="进程环境"></a>进程环境</h2><ul>
-<li><p>main()</p>
-</li>
-<li><p>进程的终止</p>
-<ul>
-<li>正常终止<ul>
-<li>从main()函数返回</li>
-<li>调用exit</li>
-<li>调用_exit()或_Exit<ul>
-<li>直接推退出，不执行钩子函数</li>
-</ul>
-</li>
-<li>最后一个线程从其启动例程返回</li>
-<li>最后一个线程调用pthread_exit()</li>
-</ul>
-</li>
-<li>异常终止<ul>
-<li>调用abort</li>
-<li>接到信号并终止</li>
-<li>最后一个线程对其取消请求作出响应</li>
-</ul>
-</li>
-<li>atexit()<ul>
-<li>钩子函数</li>
-<li>register a function to be called at normal process termination</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>命令行参数</p>
-<ul>
-<li>getopt()</li>
-</ul>
-</li>
-<li><p>环境变量</p>
-<ul>
-<li>KEY &#x3D; VALUE</li>
-<li>getenv()</li>
-<li>setenv()</li>
-<li>putenv()</li>
-</ul>
-</li>
-<li><p>C程序空间布局</p>
-<ul>
-<li>pmap()</li>
-</ul>
-</li>
-<li><p>库</p>
-<ul>
-<li>静态库</li>
-<li>动态库</li>
-<li>手工装载库(库打桩)<ul>
-<li>dlopen()</li>
-<li>dlclose()</li>
-<li>dlerror()</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>函数跳转</p>
-<ul>
-<li>跨函数跳转</li>
-<li>setjmp()</li>
-<li>longjmp()</li>
-</ul>
-</li>
-<li><p>资源的获取和控制</p>
-<ul>
-<li>getrlimit()</li>
-<li>setrlimit()</li>
-</ul>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Linux系统编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BFileSystem/">展开全文 >></a>
         </p>
       
 
