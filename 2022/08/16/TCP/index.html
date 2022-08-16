@@ -6,20 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>6.s081 Lab: Copy-on-Write Fork for xv6 | mmjwxbc&#39;s blog</title>
+  <title>TCP | mmjwxbc&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="uvmcopy()函数将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1">
+  <meta name="description" content="报文段  16位端口号 标识接收进程和发送进程 32位序号 标识该数据段的索引 为了提高安全性，并避免被属于同一端点之间早期连接的旧段所混淆，TCP试图确保序列号不会被猜测，并且不太可能重复。所以流的序列号不是从0开始的。流中的第一个序列号是一个随机的32位数字，称为初始序列号(Initial sequence number, ISN)。   4位首部长度(data offset) 标识 tcp报">
 <meta property="og:type" content="article">
-<meta property="og:title" content="6.s081 Lab: Copy-on-Write Fork for xv6">
-<meta property="og:url" content="http://example.com/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/index.html">
+<meta property="og:title" content="TCP">
+<meta property="og:url" content="http://example.com/2022/08/16/TCP/index.html">
 <meta property="og:site_name" content="mmjwxbc&#39;s blog">
-<meta property="og:description" content="uvmcopy()函数将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1">
+<meta property="og:description" content="报文段  16位端口号 标识接收进程和发送进程 32位序号 标识该数据段的索引 为了提高安全性，并避免被属于同一端点之间早期连接的旧段所混淆，TCP试图确保序列号不会被猜测，并且不太可能重复。所以流的序列号不是从0开始的。流中的第一个序列号是一个随机的32位数字，称为初始序列号(Initial sequence number, ISN)。   4位首部长度(data offset) 标识 tcp报">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-23T12:14:58.000Z">
-<meta property="article:modified_time" content="2022-08-04T09:05:32.116Z">
+<meta property="og:image" content="http://example.com/2022/08/16/TCP/1.png">
+<meta property="og:image" content="http://example.com/2022/08/16/TCP/2.gif">
+<meta property="og:image" content="http://example.com/2022/08/16/TCP/3.gif">
+<meta property="article:published_time" content="2022-08-16T06:56:40.000Z">
+<meta property="article:modified_time" content="2022-08-16T08:19:39.998Z">
 <meta property="article:author" content="Lee">
-<meta property="article:tag" content="MIT6.S081">
+<meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/08/16/TCP/1.png">
   
     <link rel="alternative" href="/atom.xml" title="mmjwxbc&#39;s blog" type="application/atom+xml">
   
@@ -155,27 +159,72 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-6-s081-Lab-Copy-on-Write-Fork-for-xv6" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-TCP" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      6.s081 Lab: Copy-on-Write Fork for xv6
+      TCP
     </h1>
   
 
         
-        <a href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/" class="archive-article-date">
-  	<time datetime="2022-07-23T12:14:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-23</time>
+        <a href="/2022/08/16/TCP/" class="archive-article-date">
+  	<time datetime="2022-08-16T06:56:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-16</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="uvmcopy-函数"><a href="#uvmcopy-函数" class="headerlink" title="uvmcopy()函数"></a>uvmcopy()函数</h3><p>将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1</p>
+        <h2 id="报文段"><a href="#报文段" class="headerlink" title="报文段"></a>报文段</h2><p><img src="/2022/08/16/TCP/1.png"></p>
+<ol>
+<li>16位端口号 标识接收进程和发送进程</li>
+<li>32位序号 标识该数据段的索引<ol>
+<li>为了提高安全性，并避免被属于同一端点之间早期连接的旧段所混淆，TCP试图确保序列号不会被猜测，并且不太可能重复。所以流的序列号不是从0开始的。流中的第一个序列号是一个随机的32位数字，称为初始序列号(Initial sequence number, ISN)。</li>
+</ol>
+</li>
+<li>4位首部长度(data offset) 标识 <code>tcp</code>报头有多少个4字节</li>
+<li>6位标志位<ol>
+<li>URG 标识紧急指针是否有效</li>
+<li>ACK 标识确认序号是否有效</li>
+<li>PSH 用来提示接收端应用程序立刻将数据从 <code>tcp</code> 缓冲区读取</li>
+<li>RST 要求重新建立连接 （复位报文段）</li>
+<li>SYN 请求建立连接 （同步报文段）</li>
+<li>FIN 通知对端，本段即将关闭 （结束报文段）</li>
+</ol>
+</li>
+<li>16位窗口大小</li>
+<li>16位校验和：由发送端填充，校验和为整个 <code>TCP</code> 报文段</li>
+<li>16位紧急指针 标识哪部分紧急数据</li>
+</ol>
+<h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p><img src="/2022/08/16/TCP/2.gif"><br>TCB(传输控制块) <br>资料：<a target="_blank" rel="noopener" href="https://blog.csdn.net/xiaoyu_750516366/article/details/83242042">https://blog.csdn.net/xiaoyu_750516366/article/details/83242042</a></p>
+<ol>
+<li>服务器创建 <code>TCB</code> 传输控制块，进入 <code>LISTEN</code> 状态 </li>
+<li>进程创建 <code>TCB</code> 传输控制块，随机选取 <code>ISN</code> （初始序列号），设置 <code>SYN = 1</code> ，发送 <code>tcp</code> 报文，进入 <code>SYN-SENT</code> 状态 （消耗一个序列号）</li>
+<li>服务器接收到报文 (被设置为<code>ack = 1 syn = 1</code> ) ，然后发送报文设置 <code>ackno = x + 1</code> 并设置自己的 <code>ISN</code> <code>(seq = y)</code>，进入 <code>SYN-RCVD</code> 状态</li>
+<li>客户端接收到报文段后，可以携带确认并捎带数据(设置<code>ack = 1 &amp;&amp; ackno = y + 1</code>)，客户端进入 <code>ESTABLISHED</code> 状态</li>
+<li>服务器接收到该报文段后也进入 <code>ESTABLISHED</code> 状态</li>
+</ol>
+<h3 id="为什么不能采取两次握手"><a href="#为什么不能采取两次握手" class="headerlink" title="为什么不能采取两次握手"></a>为什么不能采取两次握手</h3><p>所谓“防止已失效的连接请求报文”是这样产生的。考虑一种正常情况。A发出连接请求，但因连接请求报文丢失而未收到确认。于是A再重传一次请求连接。后来收到了确认，建立了连接。数据传输完毕后，就释放了连接。A共发送了两个连接请求报文段。其中第一个丢失，第二个到达了B。没有“已失效的请求连接报文段”。</p>
+<p>现假定出现一种异常情况，即A发出的第一个请求连接报文段并没有丢失，而是在某些网络结点长时间滞留了，以至到连接释放以后的某个时间才到达B。本来这是一个已失效的报文段。但B收到此失效的连接请求报文段后，就误认为是A又发出一次新的连接请求。于是就向A发出确认报文段，同意建立连接。假定不采用三次握手，那么只要B发出确认，新的连接就建立了。</p>
+<p>由于现在A并没有发出建立请求的连接，因此不会理睬B的确认，也不会向B发送数据，但B却以为新的运输连接已经建立了，并一直等待A发来的数据。B的许多资源就这样白白浪费了。</p>
+<p>采用三次握手的办法可以防止上述现象发生。例如在刚才的情况下，A不会向B的确认发出确认。B由于收不到确认，就知道A并没有要求建立连接，所以就不会分配资源给这个连接。</p>
+<h3 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h3><p><img src="/2022/08/16/TCP/3.gif"></p>
+<ol>
+<li>客户端进程发送连接释放报文(<code>fin = 1 seq = u</code>)，并且停止发送数据，进入 <code>FIN-WAIT-1</code> 状态</li>
+<li>服务器收到连接释放报文，发送确认报文 (<code>ack = 1, ackno = u + 1 seq = v</code>)，服务器进入 (<code>CLOSE-WAIT</code>) 状态，此时处于半关闭状态，服务器仍能保持发送状态</li>
+<li>客户端收到报文后，进入 (<code>FIN-WAIT-2</code>) 终止等待2状态，等待服务器发送连接释放报文</li>
+<li>服务器将最后的数据发送完毕后，向客户端发送连接释放报文 (<code>fin = 1 seqno = w</code>)，进入 <code>LAST-ACK</code> 最后确认状态，等待客户端确认</li>
+<li>客户端收到服务器的连接释放报文后，必须发出确认 (<code>ack = 1 ackno = w + 1</code>)，客户端进入 <code>TIME-WAIT</code> 时间等待状态，必须经过 <code>2*MSL</code> （最长报文段寿命）时间后，当用户端撤销相应的 <code>TCB</code> 后才进入 <code>CLOSED</code> 状态</li>
+<li>服务器收到客户端的确认后，立即进入 <code>CLOSED</code> 状态</li>
+</ol>
+<h3 id="MSL-Maximum-Segment-Lifetime"><a href="#MSL-Maximum-Segment-Lifetime" class="headerlink" title="MSL(Maximum Segment Lifetime)"></a>MSL(Maximum Segment Lifetime)</h3><ul>
+<li>第一，保证客户端发送的最后一个ACK报文能够到达服务器，因为这个ACK报文可能丢失，站在服务器的角度看来，我已经发送了FIN+ACK报文请求断开了，客户端还没有给我回应，应该是我发送的请求断开报文它没有收到，于是服务器又会重新发送一次，而客户端就能在这个2MSL时间段内收到这个重传的报文，接着给出回应报文，并且会重启2MSL计时器。</li>
+<li>第二，防止类似与“三次握手”中提到了的“已经失效的连接请求报文段”出现在本连接中。客户端发送完最后一个确认报文后，在这个2MSL时间中，就可以使本连接持续的时间内所产生的所有报文段都从网络中消失。这样新的连接中不会出现旧连接的请求报文。</li>
+</ul>
 
       
 
@@ -210,7 +259,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MIT6.S081</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">计算机网络</a>
         		</li>
       		
 		</ul>
@@ -266,7 +315,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/08/16/TCP/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -280,18 +329,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/07/31/xv6-lock/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/08/16/acwing%E7%A7%8B%E6%8B%9B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%982022/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          xv6-lock
+          acwing秋招每日一题2022
         
       </div>
     </a>
   
   
-    <a href="/2022/07/22/NetworkLayer/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">NetworkLayer</div>
+    <a href="/2022/08/16/%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">链表双指针问题</div>
       <i class="icon-circle-right"></i>
     </a>
   

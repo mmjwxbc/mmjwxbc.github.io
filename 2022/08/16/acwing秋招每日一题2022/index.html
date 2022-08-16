@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>6.s081 Lab: Copy-on-Write Fork for xv6 | mmjwxbc&#39;s blog</title>
+  <title>acwing秋招每日一题2022 | mmjwxbc&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="uvmcopy()函数将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1">
+  <meta name="description" content="acwing 秋招每日一题 2022Leetcode 1282 用户分组有 n 个人被分成数量未知的组。每个人都被标记为一个从 0 到 n - 1 的唯一ID 。 给定一个整数数组 groupSizes ，其中 groupSizes[i] 是第 i 个人所在的组的大小。例如，如果 groupSizes[1] &#x3D; 3 ，则第 1 个人必须位于大小为 3 的组中。 返回一个组列表，使每个人">
 <meta property="og:type" content="article">
-<meta property="og:title" content="6.s081 Lab: Copy-on-Write Fork for xv6">
-<meta property="og:url" content="http://example.com/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/index.html">
+<meta property="og:title" content="acwing秋招每日一题2022">
+<meta property="og:url" content="http://example.com/2022/08/16/acwing%E7%A7%8B%E6%8B%9B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%982022/index.html">
 <meta property="og:site_name" content="mmjwxbc&#39;s blog">
-<meta property="og:description" content="uvmcopy()函数将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1">
+<meta property="og:description" content="acwing 秋招每日一题 2022Leetcode 1282 用户分组有 n 个人被分成数量未知的组。每个人都被标记为一个从 0 到 n - 1 的唯一ID 。 给定一个整数数组 groupSizes ，其中 groupSizes[i] 是第 i 个人所在的组的大小。例如，如果 groupSizes[1] &#x3D; 3 ，则第 1 个人必须位于大小为 3 的组中。 返回一个组列表，使每个人">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-23T12:14:58.000Z">
-<meta property="article:modified_time" content="2022-08-04T09:05:32.116Z">
+<meta property="article:published_time" content="2022-08-16T08:29:33.000Z">
+<meta property="article:modified_time" content="2022-08-16T08:30:14.361Z">
 <meta property="article:author" content="Lee">
-<meta property="article:tag" content="MIT6.S081">
+<meta property="article:tag" content="acwing">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="mmjwxbc&#39;s blog" type="application/atom+xml">
@@ -155,27 +155,82 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-6-s081-Lab-Copy-on-Write-Fork-for-xv6" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-acwing秋招每日一题2022" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      6.s081 Lab: Copy-on-Write Fork for xv6
+      acwing秋招每日一题2022
     </h1>
   
 
         
-        <a href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/" class="archive-article-date">
-  	<time datetime="2022-07-23T12:14:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-23</time>
+        <a href="/2022/08/16/acwing%E7%A7%8B%E6%8B%9B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%982022/" class="archive-article-date">
+  	<time datetime="2022-08-16T08:29:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-16</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="uvmcopy-函数"><a href="#uvmcopy-函数" class="headerlink" title="uvmcopy()函数"></a>uvmcopy()函数</h3><p>将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1</p>
+        <h1 id="acwing-秋招每日一题-2022"><a href="#acwing-秋招每日一题-2022" class="headerlink" title="acwing 秋招每日一题 2022"></a>acwing 秋招每日一题 2022</h1><h2 id="Leetcode-1282-用户分组"><a href="#Leetcode-1282-用户分组" class="headerlink" title="Leetcode 1282 用户分组"></a>Leetcode 1282 用户分组</h2><p>有 <em>n</em> 个人被分成数量未知的组。每个人都被标记为一个从 <em>0</em> 到 <em>n - 1</em> 的唯一ID 。</p>
+<p>给定一个整数数组 <em>groupSizes</em> ，其中 <em>groupSizes[i]</em> 是第 <em>i</em> 个人所在的组的大小。例如，如果 <em>groupSizes[1] &#x3D; 3</em> ，则第 <em>1</em> 个人必须位于大小为 <em>3</em> 的组中。</p>
+<p>返回一个组列表，使每个人 <em>i</em> 都在一个大小为 <em>groupSizes[i]</em> 的组中。</p>
+<p>每个人应该 恰好只 出现在 一个组 中，并且每个人必须在一个组中。如果有多个答案，返回其中 任何 一个。可以 保证 给定输入 至少有一个 有效的解。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">groupThePeople</span>(vector&lt;<span class="type">int</span>&gt;&amp; groupSizes) &#123;</span><br><span class="line">        map&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;&gt; m;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; ans;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; groupSizes.<span class="built_in">size</span>(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> cur = groupSizes[i];</span><br><span class="line">            m[cur].<span class="built_in">push_back</span>(i);</span><br><span class="line">            <span class="keyword">if</span>(m[cur].<span class="built_in">size</span>() == cur)</span><br><span class="line">            &#123;</span><br><span class="line">                ans.<span class="built_in">push_back</span>(m[cur]);</span><br><span class="line">                m[cur].<span class="built_in">clear</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h3><p>用 <em>map</em> 记录组的大小与当前组的人数，循环遍历一遍，将下边加入对应组，倘若组的人数已满则加入 <em>ans</em> 中，并清空当前 <em>vector</em> 以便下一个容量相同的组使用</p>
+<h2 id="Leetcode-768-最多能完成排序的块-WII"><a href="#Leetcode-768-最多能完成排序的块-WII" class="headerlink" title="Leetcode 768 最多能完成排序的块 WII"></a>Leetcode 768 最多能完成排序的块 WII</h2><p>这个问题和“最多能完成排序的块”相似，但给定数组中的元素可以重复，输入数组最大长度为 <em>2000</em>，其中的元素最大为 <em>10**8</em>。</p>
+<p><em>arr</em> 是一个可能包含重复元素的整数数组，我们将这个数组分割成几个“块”，并将这些块分别进行排序。之后再连接起来，使得连接的结果和按升序排序后的原数组相同。</p>
+<p>我们最多能将数组分成多少块？<br>链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/max-chunks-to-make-sorted-ii">https://leetcode.cn/problems/max-chunks-to-make-sorted-ii</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxChunksToSorted</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">        stack&lt;<span class="type">int</span>&gt; st;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; arr.<span class="built_in">size</span>(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> t = arr[i];</span><br><span class="line">            <span class="keyword">while</span>(st.<span class="built_in">size</span>() &amp;&amp; st.<span class="built_in">top</span>() &gt; arr[i])</span><br><span class="line">            &#123;</span><br><span class="line">                t = <span class="built_in">max</span>(st.<span class="built_in">top</span>(), t);</span><br><span class="line">                st.<span class="built_in">pop</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            st.<span class="built_in">push</span>(t);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> st.<span class="built_in">size</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>单调栈的思想：栈中每一个元素都是分段中的最大值，当遍历下一个元素的时候，倘若比前一个分段的最大值小则继续弹出栈中元素，直至大于前一个分段元素，并将新分段中最大的元素压入栈中，最后栈的大小就是分段数量</p>
+<h2 id="acwing-4405-统计子矩阵"><a href="#acwing-4405-统计子矩阵" class="headerlink" title="acwing 4405 统计子矩阵"></a>acwing 4405 统计子矩阵</h2><p>给定一个 N×M 的矩阵 AA，请你统计有多少个子矩阵 (最小 1×1，最大 N×M) 满足子矩阵中所有数的和不超过给定的整数 KK?</p>
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>第一行包含三个整数 N,M 和 K。</p>
+<p>之后 NN 行每行包含 M 个整数，代表矩阵 A。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>一个整数代表答案。</p>
+<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>对于 30% 的数据，N,M≤20，<br>对于 70% 的数据，N,M≤100，<br>对于 100% 的数据，1≤N,M≤500;0≤Aij≤1000;1≤K≤2.5×10^8</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">3 4 10</span><br><span class="line">1 2 3 4</span><br><span class="line">5 6 7 8</span><br><span class="line">9 10 11 12</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">19</span><br></pre></td></tr></table></figure>
+
+<h4 id="样例解释"><a href="#样例解释" class="headerlink" title="样例解释"></a>样例解释</h4><p>满足条件的子矩阵一共有 1919，包含：</p>
+<ul>
+<li>大小为 1×11×1 的有 1010 个。</li>
+<li>大小为 1×21×2 的有 33 个。</li>
+<li>大小为 1×31×3 的有 22 个。</li>
+<li>大小为 1×41×4 的有 11 个。</li>
+<li>大小为 2×12×1 的有 33 个。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">510</span>;</span><br><span class="line"><span class="type">int</span> s[N][N];</span><br><span class="line"><span class="type">int</span> g[N][N];</span><br><span class="line"><span class="type">int</span> n, m, k;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> LL;</span><br><span class="line">LL res;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;k);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= m; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;g[i][j]);</span><br><span class="line">            s[i][j] += s[i - <span class="number">1</span>][j] + g[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = i; j &lt;= n; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> l = <span class="number">1</span>, r = <span class="number">1</span>, sum = <span class="number">0</span>; r &lt;= m; r++)</span><br><span class="line">            &#123;</span><br><span class="line">                sum += s[j][r] - s[i - <span class="number">1</span>][r];</span><br><span class="line">                <span class="keyword">while</span>(sum &gt; k)</span><br><span class="line">                &#123;</span><br><span class="line">                    sum -= s[j][l] - s[i - <span class="number">1</span>][l];</span><br><span class="line">                    l++;</span><br><span class="line">                &#125;</span><br><span class="line">                res += r - l + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    cout &lt;&lt; res &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><ol>
+<li>暴力破解，四重循环，以子矩阵的四个顶点遍历，时间复杂度高，答案易重复，矩阵边界判断难</li>
+<li>二重循环 + 双指针算法（因为本题中元素都是正数）：二重循环确定矩阵的上下边界，双指针算法确定子矩阵个数，每一个 <em>[l, r]</em> 区间的子矩阵个数等于 <em>1 + 2 + ··· + (l -r) + (l - r + 1)</em>; 双指针算法的使用条件是两个指针都单调移动， 假定 <em>[l, r]</em> 区间的元素和大于 <em>k</em>，由于所有元素都是正的， <em>l</em> 不可能再往左移，它的移动方向只能是往右</li>
+</ol>
+<h2 id="Leetcode-641-设计循环双端队列"><a href="#Leetcode-641-设计循环双端队列" class="headerlink" title="Leetcode 641 设计循环双端队列"></a>Leetcode 641 设计循环双端队列</h2><p>设计实现双端队列。</p>
+<p>实现 MyCircularDeque 类:</p>
+<p>MyCircularDeque(int k) ：构造函数,双端队列最大为 k 。<br>boolean insertFront()：将一个元素添加到双端队列头部。 如果操作成功返回 true ，否则返回 false 。<br>boolean insertLast() ：将一个元素添加到双端队列尾部。如果操作成功返回 true ，否则返回 false 。<br>boolean deleteFront() ：从双端队列头部删除一个元素。 如果操作成功返回 true ，否则返回 false 。<br>boolean deleteLast() ：从双端队列尾部删除一个元素。如果操作成功返回 true ，否则返回 false 。<br>int getFront() )：从双端队列头部获得一个元素。如果双端队列为空，返回 -1 。<br>int getRear() ：获得双端队列的最后一个元素。 如果双端队列为空，返回 -1 。<br>boolean isEmpty() ：若双端队列为空，则返回 true ，否则返回 false  。<br>boolean isFull() ：若双端队列满了，则返回 true ，否则返回 false 。<br>链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/design-circular-deque">https://leetcode.cn/problems/design-circular-deque</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyCircularDeque</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> nums[<span class="number">1010</span>];</span><br><span class="line">    <span class="type">int</span> hh, tt;</span><br><span class="line">    <span class="type">int</span> capacity;</span><br><span class="line">    <span class="built_in">MyCircularDeque</span>(<span class="type">int</span> k) &#123;</span><br><span class="line">        <span class="comment">// nums = new int[k];</span></span><br><span class="line">        hh = <span class="number">0</span>;</span><br><span class="line">        tt = <span class="number">0</span>;</span><br><span class="line">        capacity = k + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">insertFront</span><span class="params">(<span class="type">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isFull</span>())</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        hh = (hh - <span class="number">1</span> + capacity) % capacity; <span class="comment">// 当为负数的时候需要回绕到数组尾部</span></span><br><span class="line">        nums[hh] = value;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">insertLast</span><span class="params">(<span class="type">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isFull</span>())</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        nums[tt] = value;			<span class="comment">// 由于初始的时候head和tail同时指向0，故需要有一者先赋值再移动</span></span><br><span class="line">        tt = (tt + <span class="number">1</span>) % capacity; <span class="comment">// 当超过数组容量时需要回绕到数组头部</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">deleteFront</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        hh = (hh + <span class="number">1</span>) % capacity;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">deleteLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        tt = (tt - <span class="number">1</span> + capacity) % capacity;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getFront</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">return</span> nums[hh];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getRear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">return</span> nums[(tt - <span class="number">1</span> + capacity) % capacity];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> hh == tt;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isFull</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (tt + <span class="number">1</span>) % capacity == hh;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Leetcode-1656-设计有序流"><a href="#Leetcode-1656-设计有序流" class="headerlink" title="Leetcode 1656 设计有序流"></a>Leetcode 1656 设计有序流</h2><p>有 n 个 (id, value) 对，其中 id 是 1 到 n 之间的一个整数，value 是一个字符串。不存在 id 相同的两个 (id, value) 对。</p>
+<p>设计一个流，以 任意 顺序获取 n 个 (id, value) 对，并在多次调用时 按 id 递增的顺序 返回一些值。</p>
+<p>实现 OrderedStream 类：</p>
+<ol>
+<li><p>OrderedStream(int n) 构造一个能接收 n 个值的流，并将当前指针 ptr 设为 1 。</p>
+</li>
+<li><p>String[] insert(int id, String value) 向流中存储新的 (id, value) 对。存储后：</p>
+<ol>
+<li>如果流存储有 id &#x3D; ptr 的 (id, value) 对，则找出从 id &#x3D; ptr 开始的 最长 id 连续递增序列 ，并 按顺序 返回与这些 id 关联的值的列表。然后，将 ptr 更新为最后那个  id + 1 。</li>
+<li>否则，返回一个空列表。</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">OrderedStream</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;string&gt; strs;</span><br><span class="line">    <span class="type">int</span> capacity;</span><br><span class="line">    <span class="type">int</span> ptr = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">OrderedStream</span>(<span class="type">int</span> n) &#123;</span><br><span class="line">        capacity = n;</span><br><span class="line">        strs.<span class="built_in">resize</span>(n + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;string&gt; <span class="title">insert</span><span class="params">(<span class="type">int</span> idKey, string value)</span> </span>&#123;</span><br><span class="line">        vector&lt;string&gt; ans;</span><br><span class="line">        strs[idKey] = value;</span><br><span class="line">        <span class="keyword">while</span>(ptr &lt;= capacity &amp;&amp; strs[ptr] != <span class="string">&quot;&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans.<span class="built_in">push_back</span>(strs[ptr++]);</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 
       
 
@@ -210,7 +265,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MIT6.S081</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">acwing</a>
         		</li>
       		
 		</ul>
@@ -266,7 +321,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/08/16/acwing%E7%A7%8B%E6%8B%9B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%982022/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -280,18 +335,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/07/31/xv6-lock/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          xv6-lock
-        
-      </div>
-    </a>
   
-  
-    <a href="/2022/07/22/NetworkLayer/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">NetworkLayer</div>
+    <a href="/2022/08/16/TCP/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">TCP</div>
       <i class="icon-circle-right"></i>
     </a>
   
