@@ -152,6 +152,110 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-链表双指针问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/16/%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88%E9%97%AE%E9%A2%98/">链表双指针问题</a>
+    </h1>
+  
+
+        
+        <a href="/2022/08/16/%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88%E9%97%AE%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2022-08-16T06:14:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="链表双指针问题"><a href="#链表双指针问题" class="headerlink" title="链表双指针问题"></a>链表双指针问题</h2><h3 id="获取倒数第k个元素"><a href="#获取倒数第k个元素" class="headerlink" title="获取倒数第k个元素"></a>获取倒数第k个元素</h3><p>将 <em>p,q</em> 指针同时指向头部元素，先让p指针移动k步，再让 <em>p,q</em> 指针同时向后移动，直至 <em>p</em> 指针为空，此时 <em>p,q</em> 指针之间的距离为k，故 <em>q</em> 指针指向的位置为倒数第k个元素</p>
+<h3 id="获取中间位置的元素"><a href="#获取中间位置的元素" class="headerlink" title="获取中间位置的元素"></a>获取中间位置的元素</h3><p>设有两个指针 fast 和 slow，初始时指向头节点。每次移动时，fast向后走两次，slow向后走一次，直到 fast 无法向后走两次。这使得在每轮移动之后。fast 和 slow 的距离就会增加一。设链表有 n 个元素，那么最多移动 n&#x2F;2 轮。当 n 为奇数时，slow 恰好指向中间结点，当 n 为 偶数时，slow 恰好指向中间两个结点的靠后一个</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode *p = head, *q = head;</span><br><span class="line">        <span class="keyword">while</span>(q != <span class="literal">nullptr</span> &amp;&amp; q-&gt;next != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">            q = q-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 偶数获取靠前一个</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode *p = head, *q = head;</span><br><span class="line">        <span class="keyword">while</span>(q-&gt;next != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            q = q-&gt;next-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(q == <span class="literal">nullptr</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="判断链表是否存在环"><a href="#判断链表是否存在环" class="headerlink" title="判断链表是否存在环"></a>判断链表是否存在环</h3><p>每轮移动使得慢指针到快指针的距离增加一，同时快指针到慢指针的距离也减少一，只要一直移动下去，快指针总会追上慢指针</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">hasCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        ListNode *p = head, *q = head;</span><br><span class="line">        <span class="keyword">while</span>(p &amp;&amp; p-&gt;next)</span><br><span class="line">        &#123;</span><br><span class="line">            p = p-&gt;next-&gt;next;</span><br><span class="line">            q = q-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(p == q)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="判断环的长度"><a href="#判断环的长度" class="headerlink" title="判断环的长度"></a>判断环的长度</h3><p>使用快慢指针判断是否存在环，当它们相遇时再移动其中一个指针，直至遇到当前另一停止的指针，则移动的步数为环的长度</p>
+<h3 id="环的入口节点"><a href="#环的入口节点" class="headerlink" title="环的入口节点"></a>环的入口节点</h3><p><code>fast == slow</code> 两指针在环中第一次相遇</p>
+<ul>
+<li><p>设链表共有 <code>a+b</code> 个节点，链表头部到链表共有 <code>a</code> 个节点，环中有 <code>b</code> 个节点；设两指针分别走了 <code>f</code>, <code>s</code> 步，则有：</p>
+<ul>
+<li><code>f = 2s</code></li>
+<li><code>f = s + nb</code> <code>fast</code> 比 <code>slow</code> 多走了 <code>n</code> 个环的长度<ul>
+<li>相减可得 <code>f = 2nb s = nb</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如果让指针从链表头部一直向前走并统计步数k，那么所有 走到链表入口节点时的步数 是：<code>k=a+nb</code></p>
+</li>
+<li><p>让双指针第二次相遇</p>
+<ul>
+<li><code>slow</code> 指针 位置不变 ，将 <code>fast</code> 指针重新 指向链表头部节点 ；<code>slow</code> 和 <code>fast</code> 同时每轮向前走 <code>1</code>  步；<br>TIPS：此时 <code>f=0</code>，<code>s = nb</code>；<br>当 <code>fast</code> 指针走到 <code>f = a</code> 步时，slow 指针走到步 <code>s = a+nb</code>，此时 两指针重合，并同时指向链表环入口 。</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/16/%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88%E9%97%AE%E9%A2%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-xv6-内存管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1124,203 +1228,6 @@
 
 
   
-    <article id="post-Linux系统编程ProcessBasic" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/">Linux系统编程ProcessBasic</a>
-    </h1>
-  
-
-        
-        <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/" class="archive-article-date">
-  	<time datetime="2022-08-01T12:36:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="进程标识符pid"><a href="#进程标识符pid" class="headerlink" title="进程标识符pid"></a>进程标识符pid</h2><ul>
-<li>类型 pid_t</li>
-<li>ps命令</li>
-<li>进程号顺次向下使用</li>
-<li>getpid()</li>
-<li>getppid()</li>
-</ul>
-<h2 id="进程的产生"><a href="#进程的产生" class="headerlink" title="进程的产生"></a>进程的产生</h2><ul>
-<li>fork()<ul>
-<li>同样的进程副本</li>
-<li>执行位置一样</li>
-<li>父子进程的区别<ul>
-<li>fork返回值不一样</li>
-<li>pid不同</li>
-<li>ppid不同</li>
-<li>未决信号和文件锁不继承</li>
-<li>资源利用率清零</li>
-</ul>
-</li>
-<li>init进程<ul>
-<li>pid &#x3D;&#x3D; 1</li>
-<li>所有进程的祖先</li>
-</ul>
-</li>
-<li>调度策略</li>
-<li>.&#x2F;fork1 &gt; &#x2F;tmp&#x2F;out<ul>
-<li>Begin打印两次?<ul>
-<li>输出到文件是全缓冲模式 还没来得及输出就fork导致缓冲区出现两份相同的[pid]Begin()!</li>
-<li>fflush(NULL)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>写时拷贝</li>
-</ul>
-</li>
-<li>vfork()</li>
-</ul>
-<h2 id="进程的消亡及释放资源"><a href="#进程的消亡及释放资源" class="headerlink" title="进程的消亡及释放资源"></a>进程的消亡及释放资源</h2><ul>
-<li>wait()</li>
-<li>waitpid()</li>
-<li>waitid()</li>
-<li>wait3()</li>
-<li>wait4()</li>
-</ul>
-<h2 id="exec函数族"><a href="#exec函数族" class="headerlink" title="exec函数族"></a>exec函数族</h2><ul>
-<li>execl()</li>
-<li>execlp()</li>
-<li>execle()</li>
-<li>execv()</li>
-<li>execvp()</li>
-</ul>
-<h2 id="用户权限和组权限"><a href="#用户权限和组权限" class="headerlink" title="用户权限和组权限"></a>用户权限和组权限</h2><ul>
-<li>r</li>
-<li>e</li>
-<li>s</li>
-<li>文件属性u + s<ul>
-<li>拥有该文件user用户的权限</li>
-</ul>
-</li>
-<li>getuid()</li>
-<li>geteuid()</li>
-<li>getgid()</li>
-<li>getegid()</li>
-<li>setuid()<ul>
-<li>设置effective id</li>
-</ul>
-</li>
-<li>setgid()</li>
-<li>setreuid()</li>
-<li>setregid()</li>
-<li>seteuid()</li>
-<li>setegid()</li>
-</ul>
-<h2 id="解释器文件"><a href="#解释器文件" class="headerlink" title="解释器文件"></a>解释器文件</h2><ul>
-<li>脚本文件<ul>
-<li>装载可执行二进制程序</li>
-<li>加载shell程序执行命令</li>
-</ul>
-</li>
-</ul>
-<h2 id="system"><a href="#system" class="headerlink" title="system"></a>system</h2><ul>
-<li>execute a shell command</li>
-<li>约等于fork exec wait的封装</li>
-</ul>
-<h2 id="进程会计"><a href="#进程会计" class="headerlink" title="进程会计"></a>进程会计</h2><ul>
-<li>acct()</li>
-</ul>
-<h2 id="进程时间"><a href="#进程时间" class="headerlink" title="进程时间"></a>进程时间</h2><ul>
-<li>times()</li>
-</ul>
-<h2 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h2><ul>
-<li>会话session<ul>
-<li>标识sid</li>
-</ul>
-</li>
-<li>终端</li>
-<li>前台进程组<ul>
-<li>最多有一个</li>
-</ul>
-</li>
-<li>后台进程组</li>
-<li>setsid()<ul>
-<li>不能父进程调用</li>
-</ul>
-</li>
-<li>getpgid()<ul>
-<li>设置组id</li>
-</ul>
-</li>
-<li>getpgrp()</li>
-</ul>
-<h2 id="系统日志"><a href="#系统日志" class="headerlink" title="系统日志"></a>系统日志</h2><ul>
-<li>syslogd服务</li>
-<li>openlog()</li>
-<li>syslog()</li>
-<li>closelog()</li>
-<li>sudo tail &#x2F;var&#x2F;log&#x2F;syslog</li>
-<li>单实例守护进程<ul>
-<li>锁文件 &#x2F;var&#x2F;run&#x2F;name.pid</li>
-<li>启动脚本文件 &#x2F;etc&#x2F;rc*</li>
-</ul>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Linux系统编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1418,11 +1325,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">NJUOS</a>
+                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
+                <a href="javascript:void(0)" class="js-tag color1">NJUOS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1439,6 +1346,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机网络（中科大）</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>

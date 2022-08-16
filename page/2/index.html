@@ -152,6 +152,203 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Linux系统编程ProcessBasic" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/">Linux系统编程ProcessBasic</a>
+    </h1>
+  
+
+        
+        <a href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/" class="archive-article-date">
+  	<time datetime="2022-08-01T12:36:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="进程标识符pid"><a href="#进程标识符pid" class="headerlink" title="进程标识符pid"></a>进程标识符pid</h2><ul>
+<li>类型 pid_t</li>
+<li>ps命令</li>
+<li>进程号顺次向下使用</li>
+<li>getpid()</li>
+<li>getppid()</li>
+</ul>
+<h2 id="进程的产生"><a href="#进程的产生" class="headerlink" title="进程的产生"></a>进程的产生</h2><ul>
+<li>fork()<ul>
+<li>同样的进程副本</li>
+<li>执行位置一样</li>
+<li>父子进程的区别<ul>
+<li>fork返回值不一样</li>
+<li>pid不同</li>
+<li>ppid不同</li>
+<li>未决信号和文件锁不继承</li>
+<li>资源利用率清零</li>
+</ul>
+</li>
+<li>init进程<ul>
+<li>pid &#x3D;&#x3D; 1</li>
+<li>所有进程的祖先</li>
+</ul>
+</li>
+<li>调度策略</li>
+<li>.&#x2F;fork1 &gt; &#x2F;tmp&#x2F;out<ul>
+<li>Begin打印两次?<ul>
+<li>输出到文件是全缓冲模式 还没来得及输出就fork导致缓冲区出现两份相同的[pid]Begin()!</li>
+<li>fflush(NULL)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>写时拷贝</li>
+</ul>
+</li>
+<li>vfork()</li>
+</ul>
+<h2 id="进程的消亡及释放资源"><a href="#进程的消亡及释放资源" class="headerlink" title="进程的消亡及释放资源"></a>进程的消亡及释放资源</h2><ul>
+<li>wait()</li>
+<li>waitpid()</li>
+<li>waitid()</li>
+<li>wait3()</li>
+<li>wait4()</li>
+</ul>
+<h2 id="exec函数族"><a href="#exec函数族" class="headerlink" title="exec函数族"></a>exec函数族</h2><ul>
+<li>execl()</li>
+<li>execlp()</li>
+<li>execle()</li>
+<li>execv()</li>
+<li>execvp()</li>
+</ul>
+<h2 id="用户权限和组权限"><a href="#用户权限和组权限" class="headerlink" title="用户权限和组权限"></a>用户权限和组权限</h2><ul>
+<li>r</li>
+<li>e</li>
+<li>s</li>
+<li>文件属性u + s<ul>
+<li>拥有该文件user用户的权限</li>
+</ul>
+</li>
+<li>getuid()</li>
+<li>geteuid()</li>
+<li>getgid()</li>
+<li>getegid()</li>
+<li>setuid()<ul>
+<li>设置effective id</li>
+</ul>
+</li>
+<li>setgid()</li>
+<li>setreuid()</li>
+<li>setregid()</li>
+<li>seteuid()</li>
+<li>setegid()</li>
+</ul>
+<h2 id="解释器文件"><a href="#解释器文件" class="headerlink" title="解释器文件"></a>解释器文件</h2><ul>
+<li>脚本文件<ul>
+<li>装载可执行二进制程序</li>
+<li>加载shell程序执行命令</li>
+</ul>
+</li>
+</ul>
+<h2 id="system"><a href="#system" class="headerlink" title="system"></a>system</h2><ul>
+<li>execute a shell command</li>
+<li>约等于fork exec wait的封装</li>
+</ul>
+<h2 id="进程会计"><a href="#进程会计" class="headerlink" title="进程会计"></a>进程会计</h2><ul>
+<li>acct()</li>
+</ul>
+<h2 id="进程时间"><a href="#进程时间" class="headerlink" title="进程时间"></a>进程时间</h2><ul>
+<li>times()</li>
+</ul>
+<h2 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h2><ul>
+<li>会话session<ul>
+<li>标识sid</li>
+</ul>
+</li>
+<li>终端</li>
+<li>前台进程组<ul>
+<li>最多有一个</li>
+</ul>
+</li>
+<li>后台进程组</li>
+<li>setsid()<ul>
+<li>不能父进程调用</li>
+</ul>
+</li>
+<li>getpgid()<ul>
+<li>设置组id</li>
+</ul>
+</li>
+<li>getpgrp()</li>
+</ul>
+<h2 id="系统日志"><a href="#系统日志" class="headerlink" title="系统日志"></a>系统日志</h2><ul>
+<li>syslogd服务</li>
+<li>openlog()</li>
+<li>syslog()</li>
+<li>closelog()</li>
+<li>sudo tail &#x2F;var&#x2F;log&#x2F;syslog</li>
+<li>单实例守护进程<ul>
+<li>锁文件 &#x2F;var&#x2F;run&#x2F;name.pid</li>
+<li>启动脚本文件 &#x2F;etc&#x2F;rc*</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Linux系统编程</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/01/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8BProcessBasic/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Linux系统编程FileSystem" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1472,11 +1669,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">NJUOS</a>
+                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">MIT6.S081</a>
+                <a href="javascript:void(0)" class="js-tag color1">NJUOS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1493,6 +1690,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机网络（中科大）</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>

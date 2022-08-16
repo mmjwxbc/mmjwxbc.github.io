@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: CS144 | mmjwxbc&#39;s blog</title>
+  <title>链表双指针问题 | mmjwxbc&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="mmjwxbc&#39;s blog">
-<meta property="og:url" content="http://example.com/tags/CS144/index.html">
+  <meta name="description" content="链表双指针问题获取倒数第k个元素将 p,q 指针同时指向头部元素，先让p指针移动k步，再让 p,q 指针同时向后移动，直至 p 指针为空，此时 p,q 指针之间的距离为k，故 q 指针指向的位置为倒数第k个元素 获取中间位置的元素设有两个指针 fast 和 slow，初始时指向头节点。每次移动时，fast向后走两次，slow向后走一次，直到 fast 无法向后走两次。这使得在每轮移动之后。fast">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表双指针问题">
+<meta property="og:url" content="http://example.com/2022/08/16/%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="mmjwxbc&#39;s blog">
+<meta property="og:description" content="链表双指针问题获取倒数第k个元素将 p,q 指针同时指向头部元素，先让p指针移动k步，再让 p,q 指针同时向后移动，直至 p 指针为空，此时 p,q 指针之间的距离为k，故 q 指针指向的位置为倒数第k个元素 获取中间位置的元素设有两个指针 fast 和 slow，初始时指向头节点。每次移动时，fast向后走两次，slow向后走一次，直到 fast 无法向后走两次。这使得在每轮移动之后。fast">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-16T06:14:01.000Z">
+<meta property="article:modified_time" content="2022-08-16T06:14:44.506Z">
 <meta property="article:author" content="Lee">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="mmjwxbc&#39;s blog" type="application/atom+xml">
@@ -150,98 +155,197 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-链表双指针问题" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/08/05/CS144-lab3%E7%BF%BB%E8%AF%91/" class="archive-article-date">
-  	<time datetime="2022-08-05T08:46:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-05</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/05/CS144-lab3%E7%BF%BB%E8%AF%91/">CS144:lab3翻译</a>
+    <h1 class="article-title" itemprop="name">
+      链表双指针问题
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2022/08/16/%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88%E9%97%AE%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2022-08-16T06:14:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="链表双指针问题"><a href="#链表双指针问题" class="headerlink" title="链表双指针问题"></a>链表双指针问题</h2><h3 id="获取倒数第k个元素"><a href="#获取倒数第k个元素" class="headerlink" title="获取倒数第k个元素"></a>获取倒数第k个元素</h3><p>将 <em>p,q</em> 指针同时指向头部元素，先让p指针移动k步，再让 <em>p,q</em> 指针同时向后移动，直至 <em>p</em> 指针为空，此时 <em>p,q</em> 指针之间的距离为k，故 <em>q</em> 指针指向的位置为倒数第k个元素</p>
+<h3 id="获取中间位置的元素"><a href="#获取中间位置的元素" class="headerlink" title="获取中间位置的元素"></a>获取中间位置的元素</h3><p>设有两个指针 fast 和 slow，初始时指向头节点。每次移动时，fast向后走两次，slow向后走一次，直到 fast 无法向后走两次。这使得在每轮移动之后。fast 和 slow 的距离就会增加一。设链表有 n 个元素，那么最多移动 n&#x2F;2 轮。当 n 为奇数时，slow 恰好指向中间结点，当 n 为 偶数时，slow 恰好指向中间两个结点的靠后一个</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode *p = head, *q = head;</span><br><span class="line">        <span class="keyword">while</span>(q != <span class="literal">nullptr</span> &amp;&amp; q-&gt;next != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">            q = q-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 偶数获取靠前一个</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode *p = head, *q = head;</span><br><span class="line">        <span class="keyword">while</span>(q-&gt;next != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            q = q-&gt;next-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(q == <span class="literal">nullptr</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="判断链表是否存在环"><a href="#判断链表是否存在环" class="headerlink" title="判断链表是否存在环"></a>判断链表是否存在环</h3><p>每轮移动使得慢指针到快指针的距离增加一，同时快指针到慢指针的距离也减少一，只要一直移动下去，快指针总会追上慢指针</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">hasCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        ListNode *p = head, *q = head;</span><br><span class="line">        <span class="keyword">while</span>(p &amp;&amp; p-&gt;next)</span><br><span class="line">        &#123;</span><br><span class="line">            p = p-&gt;next-&gt;next;</span><br><span class="line">            q = q-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(p == q)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="判断环的长度"><a href="#判断环的长度" class="headerlink" title="判断环的长度"></a>判断环的长度</h3><p>使用快慢指针判断是否存在环，当它们相遇时再移动其中一个指针，直至遇到当前另一停止的指针，则移动的步数为环的长度</p>
+<h3 id="环的入口节点"><a href="#环的入口节点" class="headerlink" title="环的入口节点"></a>环的入口节点</h3><p><code>fast == slow</code> 两指针在环中第一次相遇</p>
+<ul>
+<li><p>设链表共有 <code>a+b</code> 个节点，链表头部到链表共有 <code>a</code> 个节点，环中有 <code>b</code> 个节点；设两指针分别走了 <code>f</code>, <code>s</code> 步，则有：</p>
+<ul>
+<li><code>f = 2s</code></li>
+<li><code>f = s + nb</code> <code>fast</code> 比 <code>slow</code> 多走了 <code>n</code> 个环的长度<ul>
+<li>相减可得 <code>f = 2nb s = nb</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如果让指针从链表头部一直向前走并统计步数k，那么所有 走到链表入口节点时的步数 是：<code>k=a+nb</code></p>
+</li>
+<li><p>让双指针第二次相遇</p>
+<ul>
+<li><code>slow</code> 指针 位置不变 ，将 <code>fast</code> 指针重新 指向链表头部节点 ；<code>slow</code> 和 <code>fast</code> 同时每轮向前走 <code>1</code>  步；<br>TIPS：此时 <code>f=0</code>，<code>s = nb</code>；<br>当 <code>fast</code> 指针走到 <code>f = a</code> 步时，slow 指针走到步 <code>s = a+nb</code>，此时 两指针重合，并同时指向链表环入口 。</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">CS144</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/08/16/%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/" class="archive-article-date">
-  	<time datetime="2022-08-03T12:18:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-03</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/14/xv6-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">xv6:内存管理</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/08/03/CS144-lab2%E7%BF%BB%E8%AF%91/">CS144:lab2翻译</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">CS144</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -264,9 +368,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
