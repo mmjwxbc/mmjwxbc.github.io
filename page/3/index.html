@@ -152,80 +152,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-6-s081-Lab-Copy-on-Write-Fork-for-xv6" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/">6.s081 Lab: Copy-on-Write Fork for xv6</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/" class="archive-article-date">
-  	<time datetime="2022-07-23T12:14:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="uvmcopy-函数"><a href="#uvmcopy-函数" class="headerlink" title="uvmcopy()函数"></a>uvmcopy()函数</h3><p>将子进程的页表映射到父进程的物理页当中、并将PTE_W位置为0, PTE_COW置为1</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MIT6.S081</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/23/6-s081-Lab-Copy-on-Write-Fork-for-xv6/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-NetworkLayer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -298,6 +224,282 @@
 <h3 id="NAT-Network-Address-Translation"><a href="#NAT-Network-Address-Translation" class="headerlink" title="NAT: Network Address Translation"></a>NAT: Network Address Translation</h3><p>网络地址转换 <br>内网地址与源IP地址相互转换<br><img src="/2022/07/22/NetworkLayer/4.3.11.png"><br><img src="/2022/07/22/NetworkLayer/4.3.12.png"><br><img src="/2022/07/22/NetworkLayer/4.3.13.png"><br><img src="/2022/07/22/NetworkLayer/4.3.14.png"><br><img src="/2022/07/22/NetworkLayer/4.3.15.png"></p>
 <h3 id="NAT穿越问题-外网主机端口如何访问内网某主机端口"><a href="#NAT穿越问题-外网主机端口如何访问内网某主机端口" class="headerlink" title="NAT穿越问题 外网主机端口如何访问内网某主机端口"></a>NAT穿越问题 外网主机端口如何访问内网某主机端口</h3><p><img src="/2022/07/22/NetworkLayer/4.3.16.png"><br><img src="/2022/07/22/NetworkLayer/4.3.17.png"><br><img src="/2022/07/22/NetworkLayer/4.3.18.png"></p>
 <h2 id="通用转发和SDN"><a href="#通用转发和SDN" class="headerlink" title="通用转发和SDN"></a>通用转发和SDN</h2><p><img src="/2022/07/22/NetworkLayer/4.4.1.png"><br>SDN：软件定义网络 <br>传统方式下路由器只能进行转发，SDN方式下还可以进行丢弃、泛洪、修改字段<br><img src="/2022/07/22/NetworkLayer/4.4.2.png"><br><img src="/2022/07/22/NetworkLayer/4.4.3.png"><br><img src="/2022/07/22/NetworkLayer/4.4.4.png"><br><img src="/2022/07/22/NetworkLayer/4.4.5.png"><br><img src="/2022/07/22/NetworkLayer/4.4.6.png"></p>
+<h2 id><a href="#" class="headerlink" title></a></h2><h2 id="CIDR"><a href="#CIDR" class="headerlink" title="CIDR"></a>CIDR</h2><p>无类域间路由: (CIDR: Classess InterDomain Routing)</p>
+<ul>
+<li><p>消除传统的A类、B类和C类地址界限</p>
+</li>
+<li><p>融合子网地址与子网掩码，方便子网划分</p>
+<ul>
+<li>无类地址格式: a.b.c.d&#x2F;x x为前缀长度</li>
+</ul>
+</li>
+<li><p>提高IPv4地址空间分配效率</p>
+</li>
+<li><p>提高路由效率</p>
+<ul>
+<li><p>将多个子网聚合成一个较大的子网</p>
+<ul>
+<li>假设prefix是23位，则可以将两个子网聚合</li>
+</ul>
+</li>
+<li><p>构造超网</p>
+</li>
+<li><p>路由聚合</p>
+<ul>
+<li><p>减少路由表大小</p>
+</li>
+<li><p><img src="/2022/07/22/NetworkLayer/image-20220902160750424.png" alt="image-20220902160750424"></p>
+</li>
+<li><p><img src="/2022/07/22/NetworkLayer/image-20220902160946874.png" alt="image-20220902160946874"></p>
+</li>
+</ul>
+</li>
+<li><p>路由黑洞现象<img src="/2022/07/22/NetworkLayer/image-20220902161634678.png" alt="image-20220902161634678"></p>
+<ul>
+<li>某一子网的子网的划分并不连续，导致该子网囊括了其他子网的子网，最终导致这个子网（组织）无法接受信息</li>
+<li>解决方法<ul>
+<li>最长前缀匹配优先</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="DHCP协议"><a href="#DHCP协议" class="headerlink" title="DHCP协议"></a>DHCP协议</h2><p>如何获取IP地址</p>
+<ul>
+<li><p>硬编码 静态配置<img src="/2022/07/22/NetworkLayer/image-20220902162445813.png" alt="image-20220902162445813"></p>
+</li>
+<li><p>动态主机配置协议 Dynamic Host Configuration Protocol</p>
+<ul>
+<li><p>从DHCP服务器动态获取</p>
+<ul>
+<li>IP地址</li>
+<li>子网掩码</li>
+<li>默认网关地址</li>
+<li>DNS服务器名称与IP地址</li>
+</ul>
+</li>
+<li><p>允许地址重用</p>
+</li>
+<li><p>支持在用地址续租</p>
+</li>
+<li><p>流程</p>
+<ul>
+<li>主机广播 <code>DHCP discvoer</code> 发现报文</li>
+<li>DHCP服务器利用 <code>DHCP offer</code> 提供报文进行响应</li>
+<li>主机请求IP地址 <code>DHCP request</code> 请求报文 <ul>
+<li>目的地址仍然是广播，目的是告诉子网的其他服务器我已经我去了IP地址，请撤回对我这台主机之前的 <code>DHCP offer</code> 的ip地址</li>
+</ul>
+</li>
+<li>DHCP服务器分配IP地址 <code>DHCP ack</code> 确认报文<img src="/2022/07/22/NetworkLayer/image-20220902165411792.png" alt="image-20220902165411792"></li>
+</ul>
+</li>
+<li><p>DHCP协议在应用层实现</p>
+<ul>
+<li>利用UDP运输层服务</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="网络地址转换-NAT"><a href="#网络地址转换-NAT" class="headerlink" title="网络地址转换 NAT"></a>网络地址转换 NAT</h2><ul>
+<li>起因<ul>
+<li>只需&#x2F;能从ISP申请一个IP地址</li>
+<li>本地网络设备IP地址的变更，无需通告外界网络</li>
+<li>变更ISP时，无需修改内部网络设备IP地址</li>
+<li>内部网络设备对外界网络不可见，即不可直接寻址（安全）</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022/07/22/NetworkLayer/image-20220902175043611.png" alt="a"></p>
+<ul>
+<li><p>实现<img src="/2022/07/22/NetworkLayer/image-20220902175614347.png" alt="image-20220902175614347"></p>
+</li>
+<li><p>NAT端口数量问题</p>
+<ul>
+<li>可以同时支持60000多并行连接</li>
+</ul>
+</li>
+<li><p>NAT主要争议</p>
+<ul>
+<li>路由器应该只处理第三层的功能</li>
+<li>违背端到端通信原则<ul>
+<li>P2P应用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>NAT穿透问题<img src="/2022/07/22/NetworkLayer/image-20220902181158567.png" alt="image-20220902181158567"><img src="/2022/07/22/NetworkLayer/image-20220902181452476.png" alt="image-20220902181452476"><img src="/2022/07/22/NetworkLayer/image-20220902181859326.png" alt="image-20220902181859326"></p>
+</li>
+</ul>
+<h2 id="互联网控制报文协议ICMP"><a href="#互联网控制报文协议ICMP" class="headerlink" title="互联网控制报文协议ICMP"></a>互联网控制报文协议ICMP</h2><ul>
+<li>完成差错报告</li>
+<li>网络探询</li>
+</ul>
+<h3 id="两类ICMP报文"><a href="#两类ICMP报文" class="headerlink" title="两类ICMP报文"></a>两类ICMP报文</h3><ul>
+<li>差错报告报文<ul>
+<li>目的不可达</li>
+<li>源抑制<ul>
+<li>拥塞控制</li>
+</ul>
+</li>
+<li>超时&#x2F;超期<ul>
+<li>TTL为零时，丢弃该报文，并且向源主机发送超时报文</li>
+</ul>
+</li>
+<li>参数问题</li>
+<li>重定向</li>
+</ul>
+</li>
+<li>网络探询报文<ul>
+<li>回声(Echo)请求与应答报文(Reply)<ul>
+<li>ping</li>
+</ul>
+</li>
+<li>时间戳请求与应答报文</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022/07/22/NetworkLayer/image-20220902183012289.png" alt="image-20220902183012289"></p>
+<h3 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h3><p><img src="/2022/07/22/NetworkLayer/image-20220902183530313.png" alt="image-20220902183530313"></p>
+<h3 id="报文的格式"><a href="#报文的格式" class="headerlink" title="报文的格式"></a>报文的格式</h3><p><img src="/2022/07/22/NetworkLayer/image-20220902183819921.png" alt="image-20220902183819921"><img src="/2022/07/22/NetworkLayer/image-20220902184146407.png" alt="image-20220902184146407"></p>
+<h3 id="实例-Traceroute"><a href="#实例-Traceroute" class="headerlink" title="实例 Traceroute"></a>实例 Traceroute</h3><p>不同探测过程，经过的路由器可能不一样，但是短时间内的探测，路由表应该未更新</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220903123109340.png" alt="image-20220903123109340"></p>
+<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><p>动机：32位IPv4地址空间已分配殆尽 、改进首部格式、快速处理&#x2F;转发数据报、支持QoS</p>
+<p>数据包格式：固定长度的40字节基本首部、不允许分片</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220903151654958.png" alt="image-20220903151654958"></p>
+<h3 id="数据包格式"><a href="#数据包格式" class="headerlink" title="数据包格式"></a>数据包格式</h3><ul>
+<li>流标签 根据标签提供不同的部分</li>
+<li>下一个首部<ul>
+<li>扩展首部中也有下一个首部这一字段</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022/07/22/NetworkLayer/image-20220903152520431.png" alt="image-20220903152520431"></p>
+<h3 id="IPv4-Vs-IPv6"><a href="#IPv4-Vs-IPv6" class="headerlink" title="IPv4 Vs IPv6"></a>IPv4 Vs IPv6</h3><p>取消校验和头部，减少每跳的处理时间</p>
+<p>IPv6集成IGMP协议</p>
+<h3 id="IPv6地址表示形式"><a href="#IPv6地址表示形式" class="headerlink" title="IPv6地址表示形式"></a>IPv6地址表示形式</h3><p><img src="/2022/07/22/NetworkLayer/image-20220903153446627.png" alt="image-20220903153446627"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220903153817462.png" alt="image-20220903153817462"></p>
+<h3 id="过渡（隧道技术）"><a href="#过渡（隧道技术）" class="headerlink" title="过渡（隧道技术）"></a>过渡（隧道技术）</h3><p><img src="/2022/07/22/NetworkLayer/image-20220903154026636.png" alt="image-20220903154026636"></p>
+<h2 id="路由和转发"><a href="#路由和转发" class="headerlink" title="路由和转发"></a>路由和转发</h2><p><img src="/2022/07/22/NetworkLayer/image-20220904184132298.png" alt="image-20220904184132298"></p>
+<h3 id="网络抽象：图"><a href="#网络抽象：图" class="headerlink" title="网络抽象：图"></a>网络抽象：图</h3><p><img src="/2022/07/22/NetworkLayer/image-20220904184056860.png" alt="image-20220904184056860"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220904184536245.png" alt="image-20220904184536245"></p>
+<h3 id="路由算法分类"><a href="#路由算法分类" class="headerlink" title="路由算法分类"></a>路由算法分类</h3><ul>
+<li><p>静态路由</p>
+<ul>
+<li>手工配置</li>
+<li>路由更新慢</li>
+<li>优先级高</li>
+</ul>
+</li>
+<li><p>动态路由</p>
+<ul>
+<li>路由更新快<ul>
+<li>定期更新</li>
+<li>及时响应链路费用或网络拓扑变化</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>全局信息</p>
+<ul>
+<li>所有路由器掌握完整的网络拓扑和链路费用信息</li>
+<li>E.g. 链路状态路由算法</li>
+</ul>
+</li>
+<li><p>分散信息</p>
+<ul>
+<li>路由器只掌握物理相连的邻居以及链路费用</li>
+<li>邻居间信息交换、运算的迭代过程</li>
+<li>E.g. 距离向量路由算法</li>
+</ul>
+</li>
+</ul>
+<h3 id="链路状态路由算法"><a href="#链路状态路由算法" class="headerlink" title="链路状态路由算法"></a>链路状态路由算法</h3><p>基于Dijkstra算法</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220904185602791.png" alt="image-20220904185602791"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> g[N][N]; <span class="comment">// 存储路由器之间的费用</span></span><br><span class="line"><span class="type">bool</span> st[N]; <span class="comment">// 最短距离确定的点的集合</span></span><br><span class="line"><span class="type">int</span> dist[N]; <span class="comment">// 距离当前路由器的距离</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dijkstra</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dist, <span class="number">0x3f</span>, <span class="keyword">sizeof</span> dist);</span><br><span class="line">    dist[u] = <span class="number">0</span>; <span class="comment">// 路由器u到自己的距离是0</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i ++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> t = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)</span><br><span class="line">            <span class="keyword">if</span>(!st[j] &amp;&amp; (t == <span class="number">-1</span> || dist[t] &gt; dist[j]))</span><br><span class="line">                t = j;</span><br><span class="line">        st[t] = <span class="literal">true</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)</span><br><span class="line">            dist[j] = <span class="built_in">min</span>(dist[j], dist[t] + g[t][j]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/22/NetworkLayer/image-20220904190356187.png" alt="image-20220904190356187"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220904190545509.png" alt="image-20220904190545509"></p>
+<h4 id="震荡现象"><a href="#震荡现象" class="headerlink" title="震荡现象"></a>震荡现象</h4><p><img src="/2022/07/22/NetworkLayer/image-20220904190851318.png" alt="image-20220904190851318"></p>
+<ul>
+<li>本来<code>B</code>是将<code>数据报p</code>从 <code>B</code> 发送到 <code>A</code> ，但是经过计算发现从<code>B -&gt; C -&gt; D -&gt; A</code>更好，当数据报到<code>D</code>的时候，路由器重新计算路由表，发现从<code>D -&gt; C -&gt; B -&gt; A</code>更好，但是当数据报到达<code>B</code>的时候，可能再次进行路由表更新，发现<code>B -&gt; C -&gt; D -&gt; A</code>更好从而周而复始，导致数据报TTL到期，从而丢失</li>
+</ul>
+<h3 id="距离向量路由算法"><a href="#距离向量路由算法" class="headerlink" title="距离向量路由算法"></a>距离向量路由算法</h3><p>Bellman-Ford算法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">10010</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Edge</span>&#123;</span><br><span class="line">    <span class="type">int</span> a, b, w;</span><br><span class="line">&#125;edges[N];</span><br><span class="line"><span class="type">int</span> n, m, k;</span><br><span class="line"><span class="type">int</span> dist[N], backup[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bellman_ford</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dist, <span class="number">0x3f</span>, <span class="keyword">sizeof</span> dist);</span><br><span class="line">    dist[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; k; i ++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(backup, dist, <span class="keyword">sizeof</span> dist);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; m; j ++ )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> a = edges[j].a, b = edges[j].b, w = edges[j].w;</span><br><span class="line">            dist[b] = <span class="built_in">min</span>(dist[b], backup[a] + w);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; m; i ++ ) <span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>, &amp;edges[i].a, &amp;edges[i].b, &amp;edges[i].w);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">bellman_ford</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(dist[n] &gt; <span class="number">0x3f3f3f3f</span> - <span class="number">100000</span>) <span class="built_in">puts</span>(<span class="string">&quot;impossible&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, dist[n]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/22/NetworkLayer/image-20220904191639193.png" alt="image-20220904191639193"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220904195246654.png" alt="image-20220904195246654"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220904195627294.png" alt="image-20220904195627294"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220904200148128.png" alt="image-20220904200148128"></p>
+<h4 id="算法举例"><a href="#算法举例" class="headerlink" title="算法举例"></a>算法举例</h4><p><img src="/2022/07/22/NetworkLayer/image-20220904200740110.png" alt="image-20220904200740110"></p>
+<h5 id="链路费用变化"><a href="#链路费用变化" class="headerlink" title="链路费用变化"></a>链路费用变化</h5><p><img src="/2022/07/22/NetworkLayer/image-20220904201317951.png" alt="image-20220904201317951"></p>
+<h5 id="无穷计数问题"><a href="#无穷计数问题" class="headerlink" title="无穷计数问题"></a>无穷计数问题</h5><p><img src="/2022/07/22/NetworkLayer/image-20220904201742895.png" alt="image-20220904201742895"></p>
+<h6 id="解决方法1"><a href="#解决方法1" class="headerlink" title="解决方法1"></a>解决方法1</h6><p><img src="/2022/07/22/NetworkLayer/image-20220904202246821.png" alt="image-20220904202246821"></p>
+<h6 id="解决方法2"><a href="#解决方法2" class="headerlink" title="解决方法2"></a>解决方法2</h6><p><img src="/2022/07/22/NetworkLayer/image-20220904202628677.png" alt="image-20220904202628677"></p>
+<h3 id="层次路由"><a href="#层次路由" class="headerlink" title="层次路由"></a>层次路由</h3><p>DV和LS算法对于实际网络来说不可行，路由表信息过大以及交换量巨大占用网络带宽</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905205408634.png" alt="image-20220905205408634"></p>
+<h4 id="自治系统（分治管理hhh）"><a href="#自治系统（分治管理hhh）" class="headerlink" title="自治系统（分治管理hhh）"></a>自治系统（分治管理hhh）</h4><p>聚集路由器为一个区域</p>
+<p>自治系统外的站点，通过AS的网关路由器访问其他AS</p>
+<p>转发表由AS内部路由算法与AS间路由算法共同配置</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905205848437.png" alt="image-20220905205848437"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905210143995.png" alt="image-20220905210143995"></p>
+<p>网关路由器通过AS间的路由算法得到其他AS的可达性信息，必须将其传播给AS内部路由器</p>
+<h5 id="路由表1d的转发表设置"><a href="#路由表1d的转发表设置" class="headerlink" title="路由表1d的转发表设置"></a>路由表1d的转发表设置</h5><p><img src="/2022/07/22/NetworkLayer/image-20220905211147171.png" alt="image-20220905211147171"></p>
+<h5 id="多AS间选择"><a href="#多AS间选择" class="headerlink" title="多AS间选择"></a>多AS间选择</h5><p><img src="/2022/07/22/NetworkLayer/image-20220905211440145.png" alt="image-20220905211440145"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905211722958.png" alt="image-20220905211722958"></p>
+<h3 id="-1"><a href="#-1" class="headerlink" title></a></h3><p>AS内部路由协议称为内部网络协议<code>IGP (interior gateway protocols)</code> ，例如：路由信息协议RIP(Routing Information Protocol)；开放最短路径优先OSTF(Open Shortest Path First)；内部网关路由协议IGRP(Interior Gateway Routing Protocol) Cisco的私有协议</p>
+<h4 id="RIP协议"><a href="#RIP协议" class="headerlink" title="RIP协议"></a>RIP协议</h4><p>路由表中添加下一跳的字段，实现毒性逆转的功能</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905212533872.png" alt="image-20220905212533872"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905212746803.png" alt="image-20220905212746803"></p>
+<h6 id="链路失效、恢复"><a href="#链路失效、恢复" class="headerlink" title="链路失效、恢复"></a>链路失效、恢复</h6><p><img src="/2022/07/22/NetworkLayer/image-20220905213234971.png" alt="image-20220905213234971"></p>
+<h6 id="路由表处理"><a href="#路由表处理" class="headerlink" title="路由表处理"></a>路由表处理</h6><p><img src="/2022/07/22/NetworkLayer/image-20220905213419987.png" alt="image-20220905213419987"></p>
+<p>为什么路由器只有三层功能，却运行着传输层和应用层的功能？</p>
+<p>路由器的上层功能并不是面向网络用户的，而是面向网络层功能实现的</p>
+<h4 id="OSTF协议"><a href="#OSTF协议" class="headerlink" title="OSTF协议"></a>OSTF协议</h4><p><img src="/2022/07/22/NetworkLayer/image-20220905214449447.png" alt="image-20220905214449447"></p>
+<h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><ul>
+<li>安全</li>
+<li>等价路由、负载均衡</li>
+<li>根据不同数据进行分流 TOS<ul>
+<li><a target="_blank" rel="noopener" href="http://t.zoukankan.com/lsgxeva-p-12384641.html">http://t.zoukankan.com/lsgxeva-p-12384641.html</a></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905215030335.png" alt="image-20220905215030335"></p>
+<h6 id="分层的OSPF"><a href="#分层的OSPF" class="headerlink" title="分层的OSPF"></a>分层的OSPF</h6><p>减少交换量以及拓扑结构信息</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905215243697.png" alt="image-20220905215243697"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905215535358.png" alt="image-20220905215535358"></p>
+<p>通告外部路由5类ISA</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220905220005929.png" alt="image-20220905220005929"></p>
+<h4 id="BGP协议-边界网关协议（标准域间路由协议）"><a href="#BGP协议-边界网关协议（标准域间路由协议）" class="headerlink" title="BGP协议 边界网关协议（标准域间路由协议）"></a>BGP协议 边界网关协议（标准域间路由协议）</h4><ul>
+<li>eBGP<ul>
+<li>从邻居AS获取子网可达性信息</li>
+</ul>
+</li>
+<li>iBGP<ul>
+<li>向所有AS内部路由器传播子网可达性信息</li>
+</ul>
+</li>
+<li>BGP会话<ul>
+<li>BGP报文<ul>
+<li>通告去往不同目的前缀的路径（路径向量协议）</li>
+<li>基于半永久的TCP连接</li>
+<li>报文类型<img src="/2022/07/22/NetworkLayer/image-20220906131929415.png" alt="image-20220906131929415"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022/07/22/NetworkLayer/image-20220906132150596.png" alt="image-20220906132150596"></p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220906132515032.png" alt="image-20220906132515032"></p>
+<h6 id="路径属性和BGP路由"><a href="#路径属性和BGP路由" class="headerlink" title="路径属性和BGP路由"></a>路径属性和BGP路由</h6><p><img src="/2022/07/22/NetworkLayer/image-20220906132859071.png" alt="image-20220906132859071"></p>
+<p>不同的下一跳选择根据热土豆原则</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220906141510631.png" alt="image-20220906141510631"></p>
+<h6 id="BGP路由选择策略"><a href="#BGP路由选择策略" class="headerlink" title="BGP路由选择策略"></a>BGP路由选择策略</h6><p><img src="/2022/07/22/NetworkLayer/image-20220906142002255.png" alt="image-20220906142002255"></p>
+<p>只讲路由信息告知自己的客户</p>
+<p><img src="/2022/07/22/NetworkLayer/image-20220906142437965.png" alt="image-20220906142437965"></p>
+<h5 id="为什么采用不同的AS内与AS间路由协议"><a href="#为什么采用不同的AS内与AS间路由协议" class="headerlink" title="为什么采用不同的AS内与AS间路由协议"></a>为什么采用不同的AS内与AS间路由协议</h5><p><img src="/2022/07/22/NetworkLayer/image-20220906142805620.png" alt="image-20220906142805620"></p>
 
       
 
@@ -605,11 +807,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络（中科大）</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机网络（中科大）</a>
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -617,11 +819,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+                <a href="javascript:void(0)" class="js-tag color2">AcWing</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">AcWing</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>
